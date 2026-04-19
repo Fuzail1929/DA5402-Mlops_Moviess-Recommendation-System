@@ -9,13 +9,8 @@ stages:
       - logs/data_validation_report.json
 
   preprocess:
-    cmd: python -c "
-      import sys; sys.path.insert(0, 'ml_pipeline');
-      from data_loader import load_data;
-      from preprocess import preprocess;
-      df = load_data();
-      preprocess(df, save_features=True)
-      "
+    cmd: |
+      python -c "import sys; sys.path.insert(0, 'ml_pipeline'); from data_loader import load_data; from preprocess import preprocess; df = load_data(); preprocess(df, save_features=True)"
     deps:
       - data/tmdb_5000_movies.csv
       - data/tmdb_5000_credits.csv
@@ -25,16 +20,11 @@ stages:
       - ml_pipeline/feature_store
 
   train:
-    cmd: python -c "
-      import sys; sys.path.insert(0, 'ml_pipeline');
-      from train import train;
-      train()
-      "
+    cmd: |
+      python -c "import sys; sys.path.insert(0, 'ml_pipeline'); from train import train; train()"
     deps:
       - ml_pipeline/feature_store
       - ml_pipeline/train.py
-      - ml_pipeline/preprocess.py
-      - ml_pipeline/data_loader.py
     outs:
       - ml_pipeline/model/movies.pkl
       - ml_pipeline/model/similarity.pkl
@@ -47,16 +37,7 @@ stages:
           cache: false
 
   evaluate:
-    cmd: python -c "
-      import json;
-      with open('ml_pipeline/model/model_version.json') as f:
-          v = json.load(f);
-      print('Genre match rate:', v.get('avg_genre_match_rate'));
-      print('Most important feature:', v.get('most_important_feature'));
-      print('Memory reduction:', v.get('memory_reduction_pct'), '%')
-      "
+    cmd: |
+      python -c "import json; f=open('ml_pipeline/model/model_version.json'); v=json.load(f); print('Genre match rate:', v.get('avg_genre_match_rate')); print('Most important feature:', v.get('most_important_feature')); print('Memory reduction:', v.get('memory_reduction_pct'), '%')"
     deps:
       - ml_pipeline/model/model_version.json
-    metrics:
-      - ml_pipeline/model/model_version.json:
-          cache: false
