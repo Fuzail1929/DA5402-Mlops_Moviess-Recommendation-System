@@ -1,0 +1,139 @@
+{
+  "timestamp": "2026-04-17T20:13:58.506586",
+  "movies_rows": 4803,
+  "credits_rows": 4803,
+  "merged_rows": 4809,
+  "movies_missing": {
+    "budget": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "genres": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "homepage": {
+      "missing_count": 3091,
+      "missing_rate": 0.6436
+    },
+    "id": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "keywords": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "original_language": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "original_title": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "overview": {
+      "missing_count": 3,
+      "missing_rate": 0.0006
+    },
+    "popularity": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "production_companies": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "production_countries": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "release_date": {
+      "missing_count": 1,
+      "missing_rate": 0.0002
+    },
+    "revenue": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "runtime": {
+      "missing_count": 2,
+      "missing_rate": 0.0004
+    },
+    "spoken_languages": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "status": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "tagline": {
+      "missing_count": 844,
+      "missing_rate": 0.1757
+    },
+    "title": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "vote_average": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "vote_count": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    }
+  },
+  "credits_missing": {
+    "movie_id": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "title": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "cast": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    },
+    "crew": {
+      "missing_count": 0,
+      "missing_rate": 0.0
+    }
+  },
+  "movies_quality": {
+    "row_count": 4803,
+    "duplicate_titles": 3,
+    "empty_genres": 0,
+    "empty_homepage": 0,
+    "empty_keywords": 0,
+    "empty_original_language": 0,
+    "empty_original_title": 0,
+    "empty_overview": 1,
+    "empty_production_companies": 0,
+    "empty_production_countries": 0,
+    "empty_release_date": 0,
+    "empty_spoken_languages": 0,
+    "empty_status": 0,
+    "empty_tagline": 0,
+    "empty_title": 0,
+    "rating_outliers": 156,
+    "issues": [
+      "3 duplicate titles found",
+      "1 empty strings in overview"
+    ]
+  },
+  "credits_quality": {
+    "row_count": 4803,
+    "duplicate_titles": 3,
+    "empty_title": 0,
+    "empty_cast": 0,
+    "empty_crew": 0,
+    "issues": [
+      "3 duplicate titles found"
+    ]
+  },
+  "status": "passed"
+}

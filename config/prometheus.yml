@@ -1,0 +1,45 @@
+# =============================
+# ALERTING RULES FILE
+# =============================
+rule_files:
+  - "/etc/prometheus/alerts.yml"
+
+# =============================
+# ALERTMANAGER (future use)
+# =============================
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# =============================
+# SCRAPE JOBS
+# =============================
+scrape_configs:
+
+  # Prometheus itself
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+    metrics_path: /metrics
+
+  # CineMatch FastAPI Backend
+  - job_name: "cinematch-backend"
+    static_configs:
+      - targets: ["backend:8000"]
+    metrics_path: "/metrics"
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    honor_labels: true
+
+  # Node Exporter - System metrics
+  - job_name: "node-exporter"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+    scrape_interval: 15s
+
+  # Cadvisor - Container metrics (optional)
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+    scrape_interval: 15s
