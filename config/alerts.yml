@@ -1,0 +1,212 @@
+# =============================
+# CineMatch - Prometheus Alert Rules
+# =============================
+
+groups:
+
+  # ===========================
+  # API ALERTS
+  # ===========================
+  - name: cinematch_api_alerts
+    rules:
+
+      - alert: HighErrorRate
+        expr: >
+          rate(cinematch_requests_total{status_code=~"5.."}[5m]) /
+          rate(cinematch_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "High API error rate detected"
+          description: "Error rate exceeded 5% threshold. Check backend logs immediately."
+
+      - alert: APIDown
+        expr: up{job="cinematch-backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "CineMatch API is DOWN"
+          description: "The CineMatch backend has been unreachable for 1 minute. Check Docker container status."
+
+      - alert: InferenceLatencyHigh
+        expr: cinematch_inference_latency_ms > 200
+        for: 2m
+        labels:
+          severity: warning
+          team: ml
+        annotations:
+          summary: "Inference latency exceeded 200ms business target"
+          description: "Current inference latency is above the 200ms SLO target. Check model serving performance."
+
+      - alert: InferenceLatencyCritical
+        expr: cinematch_inference_latency_ms > 500
+        for: 1m
+        labels:
+          severity: critical
+          team: ml
+        annotations:
+          summary: "CRITICAL — Inference latency exceeded 500ms"
+          description: "Inference latency is 2.5x above threshold. Immediate investigation required."
+
+      - alert: TooManyLatencyViolations
+        expr: increase(cinematch_latency_violations_total[10m]) > 5
+        for: 5m
+        labels:
+          severity: warning
+          team: ml
+        annotations:
+          summary: "Too many latency violations in last 10 minutes"
+          description: "More than 5 latency violations in the last 10 minutes. Model may be degrading under load."
+
+      - alert: NoRecommendationsServed
+        expr: rate(cinematch_recommendations_total{status="success"}[10m]) == 0
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "No successful recommendations in last 10 minutes"
+          description: "Zero successful recommendations served. Check if model files are loaded correctly."
+
+      - alert: HighRecommendationFailureRate
+        expr: >
+          rate(cinematch_recommendations_total{status="error"}[5m]) /
+          rate(cinematch_recommendations_total[5m]) > 0.10
+        for: 3m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "High recommendation failure rate"
+          description: "More than 10% of recommendation requests are failing. Check model and TMDB connectivity."
+
+      - alert: TMDBHighFailureRate
+        expr: >
+          rate(cinematch_tmdb_requests_total{status="error"}[5m]) /
+          rate(cinematch_tmdb_requests_total[5m]) > 0.20
+        for: 3m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "High TMDB API failure rate"
+          description: "More than 20% of TMDB requests are failing. Posters may not load for users."
+
+      - alert: TooManyActiveRequests
+        expr: cinematch_active_requests > 50
+        for: 2m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "Too many concurrent active requests"
+          description: "More than 50 active requests currently. System may be overloaded. Consider scaling."
+
+  # ===========================
+  # SYSTEM ALERTS
+  # ===========================
+  - name: cinematch_system_alerts
+    rules:
+
+      - alert: HighCPUWarning
+        expr: >
+          100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 70
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          reason: high_cpu
+        annotations:
+          summary: "CPU usage above 70% warning threshold"
+          description: "CPU usage exceeded 70% warning threshold. Monitor for further increase. Possible causes: high traffic, model training running."
+
+      - alert: HighCPUCritical
+        expr: >
+          100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 90
+        for: 3m
+        labels:
+          severity: critical
+          team: infrastructure
+          reason: high_cpu
+        annotations:
+          summary: "CRITICAL — CPU usage above 90%"
+          description: "CPU usage exceeded 90% critical threshold. Immediate action required. Possible causes: model training, high traffic, memory swap."
+
+      - alert: HighMemoryWarning
+        expr: >
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 75
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          reason: high_memory
+        annotations:
+          summary: "Memory usage above 75%"
+          description: "Memory usage exceeded 75% warning threshold. Monitor available memory closely."
+
+      - alert: HighMemoryCritical
+        expr: >
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 3m
+        labels:
+          severity: critical
+          team: infrastructure
+          reason: high_memory
+        annotations:
+          summary: "CRITICAL — Memory usage above 90%"
+          description: "Memory usage exceeded 90% critical threshold. System may start swapping. Restart services or scale up."
+
+      - alert: HighDiskUsage
+        expr: >
+          (node_filesystem_size_bytes{mountpoint="/"} -
+           node_filesystem_free_bytes{mountpoint="/"}) /
+           node_filesystem_size_bytes{mountpoint="/"} * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          reason: high_disk
+        annotations:
+          summary: "Disk usage above 80%"
+          description: "Disk usage exceeded 80% on root filesystem. Clean up model artifacts or logs to free space."
+
+      - alert: HighNetworkReceive
+        expr: rate(node_network_receive_bytes_total[5m]) > 100000000
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          reason: high_network
+        annotations:
+          summary: "High network receive traffic"
+          description: "Network receive rate exceeded 100MB/s. This may indicate unusual traffic or a large data transfer."
+
+  # ===========================
+  # ML MODEL ALERTS
+  # ===========================
+  - name: cinematch_ml_alerts
+    rules:
+
+      - alert: ModelNotReady
+        expr: up{job="cinematch-backend"} == 1 unless cinematch_recommendations_total > 0
+        for: 10m
+        labels:
+          severity: warning
+          team: ml
+        annotations:
+          summary: "Model may not be loaded properly"
+          description: "Backend is up but no recommendations served in 10 minutes. Check if model pkl files exist in ml_pipeline/model/."
+
+      - alert: PrometheusDown
+        expr: up{job="prometheus"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: infrastructure
+        annotations:
+          summary: "Prometheus monitoring is down"
+          description: "Prometheus itself is unreachable. All monitoring is blind. Restart the prometheus container immediately."

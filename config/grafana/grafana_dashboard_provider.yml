@@ -1,0 +1,14 @@
+# =============================
+#  Grafana - Dashboard Provider
+# =============================
+apiVersion: 1
+
+providers:
+  - name: "CineMatch"
+    orgId: 1
+    folder: "CineMatch"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards

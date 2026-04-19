@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-04-17T19:31:45.869014",
+  "total_movies": 4806,
+  "tag_length": {
+    "mean": 591.7488555971702,
+    "variance": 32603.05470732691,
+    "min": 23.0,
+    "max": 1622.0,
+    "median": 577.0
+  },
+  "word_count": {
+    "mean": 77.59779442363713,
+    "variance": 830.4560950303622,
+    "min": 4.0,
+    "max": 212.0
+  },
+  "genre_counts": {
+    "mean_per_movie": 2.533083645443196,
+    "variance": 1.2579062851976133,
+    "movies_no_genre": 28
+  },
+  "cast_counts": {
+    "mean_per_movie": 4.914273824386184,
+    "variance": 0.30066198036360203,
+    "movies_no_cast": 42
+  },
+  "director_counts": {
+    "movies_with_director": 4776,
+    "movies_without_director": 30
+  },
+  "keyword_counts": {
+    "mean_per_movie": 7.539117769454848,
+    "variance": 39.40148717155931,
+    "movies_no_keywords": 411
+  },
+  "top_genres": {
+    "drama": 2299,
+    "comedy": 1723,
+    "thriller": 1275,
+    "action": 1156,
+    "romance": 895,
+    "adventure": 792,
+    "crime": 697,
+    "sciencefiction": 538,
+    "horror": 520,
+    "family": 514
+  }
+}

@@ -1,0 +1,1845 @@
+{
+    "title": "CineMatch \u2014 ML Monitoring Dashboard",
+    "description": "Real-time monitoring of CineMatch API, ML model performance, system resources, and TMDB integration. Color-blind friendly palette. Thresholds set per business SLOs.",
+    "uid": "cinematch-v2",
+    "timezone": "browser",
+    "schemaVersion": 36,
+    "version": 4,
+    "refresh": "10s",
+    "tags": [
+      "cinematch",
+      "ml",
+      "monitoring"
+    ],
+    "panels": [
+      {
+        "id": 1,
+        "title": "\ud83d\udccc Total API Requests",
+        "description": "Cumulative total of all API requests received since startup. Includes all endpoints.",
+        "type": "stat",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "sum(cinematch_requests_total)",
+            "legendFormat": "Total",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "#1f77b4",
+              "mode": "fixed"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 2,
+        "title": "\u2705 Successful Recommendations",
+        "description": "Total recommendation requests that returned results successfully.",
+        "type": "stat",
+        "gridPos": {
+          "x": 4,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "sum(cinematch_recommendations_total{status=\"success\"})",
+            "legendFormat": "Success",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "#2ca02c",
+              "mode": "fixed"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 3,
+        "title": "\u274c Failed Recommendations",
+        "description": "Recommendations that returned errors or were not found. High values indicate model or data issues.",
+        "type": "stat",
+        "gridPos": {
+          "x": 8,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "sum(cinematch_recommendations_total{status=~\"error|not_found\"})",
+            "legendFormat": "Failed",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "#d62728",
+              "mode": "fixed"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 4,
+        "title": "\u23f1 Last Inference Latency (ms)",
+        "description": "Most recent end-to-end inference latency. Business SLO target: <200ms. Yellow=warning, Red=critical.",
+        "type": "gauge",
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "cinematch_inference_latency_ms",
+            "legendFormat": "Latency",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "barShape": "flat",
+          "barWidthFactor": 0.5,
+          "effects": {
+            "barGlow": false,
+            "centerGlow": false,
+            "gradient": true
+          },
+          "endpointMarker": "point",
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "segmentCount": 1,
+          "segmentSpacing": 0.3,
+          "shape": "gauge",
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "sparkline": true,
+          "textMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "max": 500,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#1f77b4",
+                  "value": 0
+                },
+                {
+                  "color": "#ff7f0e",
+                  "value": 150
+                },
+                {
+                  "color": "#d62728",
+                  "value": 200
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 5,
+        "title": "\ud83d\udea8 Latency Violations (>200ms)",
+        "description": "Number of times inference exceeded the 200ms business SLO target. Should remain at 0.",
+        "type": "stat",
+        "gridPos": {
+          "x": 16,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "sum(cinematch_latency_violations_total)",
+            "legendFormat": "Violations",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#2ca02c",
+                  "value": 0
+                },
+                {
+                  "color": "#d62728",
+                  "value": 1
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 6,
+        "title": "\ud83d\udd04 Active Requests",
+        "description": "Number of requests currently being processed. High values may indicate slowdowns.",
+        "type": "stat",
+        "gridPos": {
+          "x": 20,
+          "y": 0,
+          "w": 4,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "cinematch_active_requests",
+            "legendFormat": "Active",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#2ca02c",
+                  "value": 0
+                },
+                {
+                  "color": "#ff7f0e",
+                  "value": 20
+                },
+                {
+                  "color": "#d62728",
+                  "value": 50
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 7,
+        "title": "\ud83d\udcc8 Request Rate per Minute",
+        "description": "API requests per minute broken down by endpoint. Shows traffic trends and usage patterns.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 4,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "rate(cinematch_requests_total[1m]) * 60",
+            "legendFormat": "{{endpoint}} [{{status_code}}]",
+            "refId": "A"
+          },
+          {
+            "expr": "",
+            "legendFormat": "",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic-by-name"
+            },
+            "custom": {
+              "axisBorderShow": true,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisGridShow": true,
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 5,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 3,
+              "pointSize": 4,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "reqpm"
+          },
+          "overrides": []
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "max",
+              "min",
+              "lastNotNull",
+              "count"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": true,
+            "mode": "multi",
+            "sort": "desc"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "title": "\u23f3 Request Latency Percentiles (p50 / p95 / p99)",
+        "description": "Request latency distribution. p50=median experience, p95=most users, p99=worst case. Red line=200ms SLO.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 4,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, rate(cinematch_request_latency_seconds_bucket[5m])) * 1000",
+            "legendFormat": "p50 (median)",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(cinematch_request_latency_seconds_bucket[5m])) * 1000",
+            "legendFormat": "p95",
+            "refId": "B"
+          },
+          {
+            "expr": "histogram_quantile(0.99, rate(cinematch_request_latency_seconds_bucket[5m])) * 1000",
+            "legendFormat": "p99 (worst)",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p50 (median)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#1f77b4",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p95"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#ff7f0e",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p99 (worst)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#d62728",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "max",
+              "lastNotNull",
+              "count"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "rgba(214,39,40,0.15)",
+                "value": 200
+              }
+            ]
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "title": "\ud83c\udfac Recommendation Status Breakdown",
+        "description": "Rate of successful vs failed vs not-found recommendations per minute. Healthy = mostly green.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 12,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "rate(cinematch_recommendations_total{status=\"success\"}[1m]) * 60",
+            "legendFormat": "\u2705 Success",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(cinematch_recommendations_total{status=\"not_found\"}[1m]) * 60",
+            "legendFormat": "\u26a0\ufe0f Not Found",
+            "refId": "B"
+          },
+          {
+            "expr": "rate(cinematch_recommendations_total{status=\"error\"}[1m]) * 60",
+            "legendFormat": "\u274c Error",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "series",
+              "axisGridShow": true,
+              "axisLabel": "",
+              "axisPlacement": "right",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 17,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 3,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed+area"
+              }
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 50
+                }
+              ]
+            },
+            "unit": "reqpm"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\u2705 Success"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#2ca02c",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\u26a0\ufe0f Not Found"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#ff7f0e",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\u274c Error"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#d62728",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "max",
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        }
+      },
+      {
+        "id": 10,
+        "title": "\ud83c\udf10 TMDB API Calls by Status",
+        "description": "TMDB poster fetch results: success=poster found, fallback=no poster available, error=API call failed.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 12,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "rate(cinematch_tmdb_requests_total{status=\"success\"}[1m]) * 60",
+            "legendFormat": "\u2705 Success",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(cinematch_tmdb_requests_total{status=\"fallback\"}[1m]) * 60",
+            "legendFormat": "\u26a0\ufe0f Fallback",
+            "refId": "B"
+          },
+          {
+            "expr": "rate(cinematch_tmdb_requests_total{status=\"error\"}[1m]) * 60",
+            "legendFormat": "\u274c Error",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "right",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 17,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 6,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": true,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "normal"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed+area"
+              }
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "reqpm"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\u2705 Success"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#2ca02c",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\u26a0\ufe0f Fallback"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#ff7f0e",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\u274c Error"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#d62728",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "max",
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "title": "\ud83d\udda5 CPU Usage % \u2014 with Thresholds",
+        "description": "System CPU utilization. Yellow=70% warning, Red=90% critical. Separate reasons: iowait=disk bottleneck, system=kernel load, user=app load.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 0,
+          "y": 20,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[2m])) * 100)",
+            "legendFormat": "Total CPU %",
+            "refId": "A"
+          },
+          {
+            "expr": "avg(rate(node_cpu_seconds_total{mode=\"user\"}[2m])) * 100",
+            "legendFormat": "User (App)",
+            "refId": "B"
+          },
+          {
+            "expr": "avg(rate(node_cpu_seconds_total{mode=\"system\"}[2m])) * 100",
+            "legendFormat": "System (Kernel)",
+            "refId": "C"
+          },
+          {
+            "expr": "avg(rate(node_cpu_seconds_total{mode=\"iowait\"}[2m])) * 100",
+            "legendFormat": "IO Wait (Disk)",
+            "refId": "D"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Total CPU %"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#1f77b4",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "User (App)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#2ca02c",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "System (Kernel)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#9467bd",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "IO Wait (Disk)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#8c564b",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean",
+              "stdDev"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          }
+        }
+      },
+      {
+        "id": 12,
+        "title": "\ud83d\udcbe Memory Usage \u2014 Used / Available / Cached",
+        "description": "System memory breakdown in GB. Used=active, Cached=reclaimable, Available=truly free. Alert at 75% used.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 20,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024 / 1024 / 1024",
+            "legendFormat": "Used (GB)",
+            "refId": "A"
+          },
+          {
+            "expr": "node_memory_MemAvailable_bytes / 1024 / 1024 / 1024",
+            "legendFormat": "Available (GB)",
+            "refId": "B"
+          },
+          {
+            "expr": "node_memory_Cached_bytes / 1024 / 1024 / 1024",
+            "legendFormat": "Cached (GB)",
+            "refId": "C"
+          },
+          {
+            "expr": "node_memory_Buffers_bytes / 1024 / 1024 / 1024",
+            "legendFormat": "Buffers (GB)",
+            "refId": "D"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 3,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed+area"
+              }
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "yellow",
+                  "value": 5
+                }
+              ]
+            },
+            "unit": "GB"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Used (GB)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#d62728",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Available (GB)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#2ca02c",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Cached (GB)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#1f77b4",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Buffers (GB)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#9467bd",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "lastNotNull",
+              "min",
+              "max",
+              "mean",
+              "stdDev"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        }
+      },
+      {
+        "id": 13,
+        "title": "\ud83d\udcbd Disk Usage %",
+        "description": "Root filesystem disk usage percentage. Alert triggers at 80%. High disk may cause logging failures.",
+        "type": "gauge",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 0,
+          "y": 28
+        },
+        "targets": [
+          {
+            "expr": "(node_filesystem_size_bytes{mountpoint=\"/\"} - node_filesystem_free_bytes{mountpoint=\"/\"}) / node_filesystem_size_bytes{mountpoint=\"/\"} * 100",
+            "legendFormat": "Disk %"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#2ca02c",
+                  "value": 0
+                },
+                {
+                  "color": "#ff7f0e",
+                  "value": 70
+                },
+                {
+                  "color": "#d62728",
+                  "value": 80
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          }
+        }
+      },
+      {
+        "id": 14,
+        "title": "\ud83d\udce6 Disk Space (Used vs Free)",
+        "description": "Absolute disk space in GB. Tracks growth over time to predict when disk will fill up.",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 6,
+          "y": 28
+        },
+        "targets": [
+          {
+            "expr": "(node_filesystem_size_bytes{mountpoint=\"/\"} - node_filesystem_free_bytes{mountpoint=\"/\"}) / 1024 / 1024 / 1024",
+            "legendFormat": "Used (GB)"
+          },
+          {
+            "expr": "node_filesystem_free_bytes{mountpoint=\"/\"} / 1024 / 1024 / 1024",
+            "legendFormat": "Free (GB)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "GB",
+            "lineWidth": 2
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Used (GB)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#d62728",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Free (GB)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#2ca02c",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": 15,
+        "title": "\ud83c\udf10 Network Traffic (Bytes/sec)",
+        "description": "Network receive and transmit rates. Spike in receive = high incoming traffic. Spike in transmit = large responses being sent.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 28,
+          "w": 12,
+          "h": 6
+        },
+        "targets": [
+          {
+            "expr": "rate(node_network_receive_bytes_total{device!=\"lo\"}[2m])",
+            "legendFormat": "\u2b07 Receive \u2014 {{device}}",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(node_network_transmit_bytes_total{device!=\"lo\"}[2m])",
+            "legendFormat": "\u2b06 Transmit \u2014 {{device}}",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": true,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisGridShow": true,
+              "axisLabel": "",
+              "axisPlacement": "left",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "fieldMinMax": true,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "Bps"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": ".*Receive.*"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#1f77b4",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": ".*Transmit.*"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#ff7f0e",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "max"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        }
+      },
+      {
+        "id": 16,
+        "title": "\ud83d\udcca Memory Usage %",
+        "description": "Overall memory utilization percentage gauge. Yellow=75%, Red=90% threshold.",
+        "type": "gauge",
+        "gridPos": {
+          "x": 0,
+          "y": 28,
+          "w": 6,
+          "h": 6
+        },
+        "targets": [
+          {
+            "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
+            "legendFormat": "Memory %",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#2ca02c",
+                  "value": 0
+                },
+                {
+                  "color": "#ff7f0e",
+                  "value": 75
+                },
+                {
+                  "color": "#d62728",
+                  "value": 90
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "options": {
+          "barShape": "flat",
+          "barWidthFactor": 0.5,
+          "effects": {
+            "barGlow": false,
+            "centerGlow": false,
+            "gradient": true
+          },
+          "endpointMarker": "point",
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "segmentCount": 1,
+          "segmentSpacing": 0.3,
+          "shape": "gauge",
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "sparkline": true,
+          "textMode": "auto"
+        }
+      },
+      {
+        "id": 17,
+        "title": "\ud83d\udda5 CPU Usage % Gauge",
+        "description": "Overall CPU utilization gauge. Green<70%, Yellow=70-90%, Red>90%. Separate stacked reasons shown in panel 11.",
+        "type": "gauge",
+        "gridPos": {
+          "x": 6,
+          "y": 28,
+          "w": 6,
+          "h": 6
+        },
+        "targets": [
+          {
+            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[2m])) * 100)",
+            "legendFormat": "CPU %",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#2ca02c",
+                  "value": 0
+                },
+                {
+                  "color": "#ff7f0e",
+                  "value": 70
+                },
+                {
+                  "color": "#d62728",
+                  "value": 90
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "options": {
+          "barShape": "flat",
+          "barWidthFactor": 0.5,
+          "effects": {
+            "barGlow": false,
+            "centerGlow": false,
+            "gradient": true
+          },
+          "endpointMarker": "point",
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "segmentCount": 1,
+          "segmentSpacing": 0.3,
+          "shape": "gauge",
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "sparkline": true,
+          "textMode": "auto"
+        }
+      },
+      {
+        "id": 18,
+        "title": "\u26a1 TMDB Fetch Latency (p50 / p95 / p99)",
+        "description": "Time taken to fetch poster data from TMDB API. High values cause slow recommendation responses.",
+        "type": "timeseries",
+        "gridPos": {
+          "x": 12,
+          "y": 34,
+          "w": 12,
+          "h": 6
+        },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, rate(cinematch_tmdb_latency_seconds_bucket[5m])) * 1000",
+            "legendFormat": "p50 TMDB (ms)",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(cinematch_tmdb_latency_seconds_bucket[5m])) * 1000",
+            "legendFormat": "p95 TMDB (ms)",
+            "refId": "B"
+          },
+          {
+            "expr": "histogram_quantile(0.99, rate(cinematch_tmdb_latency_seconds_bucket[5m])) * 1000",
+            "legendFormat": "p99 TMDB (ms)",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": true,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "right",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed+area"
+              }
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "orange",
+                  "value": 1000
+                },
+                {
+                  "color": "red",
+                  "value": 5000
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p50 TMDB (ms)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#1f77b4",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p95 TMDB (ms)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#ff7f0e",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "p99 TMDB (ms)"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#d62728",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "annotations": {
+            "clustering": -1,
+            "multiLane": false
+          },
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "variance",
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        }
+      }
+    ]
+  }
