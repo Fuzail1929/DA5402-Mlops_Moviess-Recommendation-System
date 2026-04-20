@@ -1,0 +1,49 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python ml_pipeline/data_loader.py
+    deps:
+    - path: data/tmdb_5000_credits.csv
+      hash: md5
+      md5: 6c5e0e12bfbc527697d7977d86b97ed4
+      size: 40044293
+    - path: data/tmdb_5000_movies.csv
+      hash: md5
+      md5: 64346a71897b5741d553d34b86088603
+      size: 5698602
+    - path: ml_pipeline/data_loader.py
+      hash: md5
+      md5: a1c886228cb1bc37a940ca907515d20c
+      size: 8863
+    outs:
+    - path: logs/data_validation_report.json
+      hash: md5
+      md5: 0b0bc93a5d98aba067adb95bf7950254
+      size: 2852
+  preprocess:
+    cmd: "python -c \"import sys; sys.path.insert(0, 'ml_pipeline'); from data_loader
+      import load_data; from preprocess import preprocess; df = load_data(); preprocess(df,
+      save_features=True)\"\n"
+    deps:
+    - path: data/tmdb_5000_credits.csv
+      hash: md5
+      md5: 6c5e0e12bfbc527697d7977d86b97ed4
+      size: 40044293
+    - path: data/tmdb_5000_movies.csv
+      hash: md5
+      md5: 64346a71897b5741d553d34b86088603
+      size: 5698602
+    - path: ml_pipeline/data_loader.py
+      hash: md5
+      md5: a1c886228cb1bc37a940ca907515d20c
+      size: 8863
+    - path: ml_pipeline/preprocess.py
+      hash: md5
+      md5: 495be62d9ab9b98d63e403bbc8c0127b
+      size: 10031
+    outs:
+    - path: ml_pipeline/feature_store
+      hash: md5
+      md5: d9a22a9715f058c436fdf46d0b95aa08.dir
+      size: 2996591
+      nfiles: 4

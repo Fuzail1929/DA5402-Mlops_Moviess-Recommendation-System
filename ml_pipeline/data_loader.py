@@ -289,3 +289,6 @@ def load_data() -> pd.DataFrame:
 
     logger.info("Data loading pipeline complete ✅")
     return merged
+
+if __name__ == "__main__":
+    load_data()

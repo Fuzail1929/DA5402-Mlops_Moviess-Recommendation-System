@@ -8,4 +8,5 @@ RUN pip install --no-cache-dir \
     mlflow==3.1.4 \
     pandas==2.2.1 \
     scikit-learn==1.3.2 \
-    numpy==1.26.4
+    numpy==1.26.4 \
+    dvc==3.66.1

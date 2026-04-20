@@ -1,0 +1,6 @@
+{
+  "version": "20260420_033639",
+  "promoted_at": "2026-04-20T03:36:56.922082",
+  "genre_match_rate": 0.86,
+  "backup_dir": "/opt/airflow/ml_pipeline/model/backup_20260420_033639"
+}
