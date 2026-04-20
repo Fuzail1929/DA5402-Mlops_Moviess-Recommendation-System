@@ -1,0 +1,124 @@
+name: CineMatch CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # =============================
+  # JOB 1: TEST
+  # Runs on every push and PR
+  # =============================
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest pandas numpy scikit-learn fastapi httpx python-dotenv requests
+
+      - name: Test data loader imports
+        run: |
+          python -c "import sys; sys.path.insert(0, 'ml_pipeline'); from data_loader import load_data; print('data_loader OK')"
+
+      - name: Test preprocess imports
+        run: |
+          python -c "import sys; sys.path.insert(0, 'ml_pipeline'); from preprocess import preprocess; print('preprocess OK')"
+
+      - name: Validate DVC pipeline
+        run: |
+          python -c "
+          import yaml
+          with open('dvc.yaml') as f:
+              yaml.safe_load(f)
+          print('dvc.yaml valid')
+          "
+
+      - name: Check DVC tracked files
+        run: |
+          echo "DVC tracked files:"
+          find . -name "*.dvc" | grep -v ".dvc/"
+
+  # =============================
+  # JOB 2: VALIDATE CONFIGS
+  # =============================
+  validate:
+    name: Validate Config Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Validate prometheus config
+        run: |
+          python -c "
+          import yaml
+          with open('config/prometheus.yml') as f:
+              yaml.safe_load(f)
+          print('prometheus.yml valid')
+          "
+
+      - name: Validate alerts config
+        run: |
+          python -c "
+          import yaml
+          with open('config/alerts.yml') as f:
+              yaml.safe_load(f)
+          print('alerts.yml valid')
+          "
+
+      - name: Validate Grafana dashboard
+        run: |
+          python -c "
+          import json
+          with open('config/grafana/cinematch_dashboard.json') as f:
+              json.load(f)
+          print('cinematch_dashboard.json valid')
+          "
+
+  # =============================
+  # JOB 3: BUILD DOCKER IMAGES
+  # Runs only on push to main
+  # =============================
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    needs: [ test, validate ]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build backend image
+        run: |
+          docker build -f Dockerfile.backend -t cinematch-backend:${{ github.sha }} .
+          echo "Backend built successfully"
+
+      - name: Build frontend image
+        run: |
+          docker build -f Dockerfile.frontend -t cinematch-frontend:${{ github.sha }} .
+          echo "Frontend built successfully"
+
+      - name: Verify images
+        run: |
+          docker images | grep cinematch
