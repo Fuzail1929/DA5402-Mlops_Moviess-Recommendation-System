@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+venv/
+.env
+env/
+ENV/
+
+# Model artifacts (tracked by DVC)
+ml_pipeline/model/movies.pkl
+ml_pipeline/model/similarity.pkl
+ml_pipeline/model/similarity_sparse.pkl
+ml_pipeline/model/vectorizer.pkl
+
+# MLflow runs (large)
+mlruns/
+mlflow.db
+
+# Data files (tracked by DVC)
+data/tmdb_5000_movies.csv
+data/tmdb_5000_credits.csv
+
+# Airflow
+airflow_db/
+logs/
+*.log
+
+# OS
+.DS_Store
+.idea/
+.vscode/
+
+# DVC cache
+.dvc/cache/
+.dvc/tmp/
+
+# Feature store versions (large)
+ml_pipeline/feature_store/v_*/
+
+# Backup models
+ml_pipeline/model/backup_*/
