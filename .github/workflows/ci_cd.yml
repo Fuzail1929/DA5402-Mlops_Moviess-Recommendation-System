@@ -27,7 +27,7 @@ jobs:
           pip install --upgrade pip
           pip install pandas numpy scikit-learn fastapi httpx python-dotenv \
                       requests scipy pyyaml pytest pytest-asyncio \
-                      mlflow difflib2 uvicorn
+                      mlflow uvicorn
 
       - name: Set environment variables
         run: |
