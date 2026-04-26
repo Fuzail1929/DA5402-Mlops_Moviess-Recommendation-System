@@ -40,6 +40,24 @@ jobs:
           mkdir -p /tmp/logs
           mkdir -p logs
 
+      - name: Create dummy model files for testing
+        run: |
+          python -c "
+          import os, pickle, numpy as np, pandas as pd
+          os.makedirs('ml_pipeline/model', exist_ok=True)
+          df = pd.DataFrame({
+              'title': ['Inception', 'The Dark Knight', 'Interstellar'],
+              'title_lower': ['inception', 'the dark knight', 'interstellar'],
+              'genres': [['Action'], ['Crime'], ['Sci-Fi']],
+              'tags': ['dream heist action', 'batman crime drama', 'space scifi']
+          })
+          sim = np.array([[1.0,0.8,0.6],[0.8,1.0,0.4],[0.6,0.4,1.0]])
+          pickle.dump(df,  open('ml_pipeline/model/movies.pkl',     'wb'))
+          pickle.dump(sim, open('ml_pipeline/model/similarity.pkl', 'wb'))
+          pickle.dump(sim, open('ml_pipeline/model/similarity_sparse.pkl', 'wb'))
+          print('Dummy model files created')
+          "
+
       - name: Run ML pipeline tests
         run: |
           pytest tests/test_ml.py -v --tb=short
