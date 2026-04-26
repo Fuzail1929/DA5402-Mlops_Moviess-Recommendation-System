@@ -27,26 +27,26 @@ os.environ["MLFLOW_TRACKING_URI"] = "file:///tmp/mlflow_test"
 @pytest.fixture
 def client():
     """Create test client with mocked ML model and MLflow."""
+    import pandas as pd
+    import numpy as np
+
+    mock_df = pd.DataFrame({
+        "title": ["Inception", "The Dark Knight", "Interstellar"],
+        "title_lower": ["inception", "the dark knight", "interstellar"],
+        "genres": [["Action"], ["Crime"], ["Sci-Fi"]],
+        "tags": ["dream heist action", "batman crime drama", "space scifi"]
+    })
+    mock_sim = np.array([
+        [1.0, 0.8, 0.6],
+        [0.8, 1.0, 0.4],
+        [0.6, 0.4, 1.0]
+    ])
+
     with patch("mlflow.set_tracking_uri"), \
          patch("mlflow.set_experiment"), \
          patch("mlflow.start_run"), \
-         patch("ml_pipeline.recommend.pickle.load") as mock_pickle:
-
-        import pandas as pd
-        import numpy as np
-
-        mock_df = pd.DataFrame({
-            "title": ["Inception", "The Dark Knight", "Interstellar"],
-            "title_lower": ["inception", "the dark knight", "interstellar"],
-            "genres": [["Action"], ["Crime"], ["Sci-Fi"]],
-            "tags": ["dream heist action", "batman crime drama", "space scifi"]
-        })
-        mock_sim = np.array([
-            [1.0, 0.8, 0.6],
-            [0.8, 1.0, 0.4],
-            [0.6, 0.4, 1.0]
-        ])
-        mock_pickle.side_effect = [mock_df, mock_sim]
+         patch("ml_pipeline.recommend.movies", mock_df), \
+         patch("ml_pipeline.recommend.similarity", mock_sim):
 
         from backend.main import app
         with TestClient(app) as c:

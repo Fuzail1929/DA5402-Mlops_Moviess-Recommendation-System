@@ -294,7 +294,8 @@ class TestRecommendEngine:
         mock_df = pd.DataFrame({
             "title": ["Inception", "The Dark Knight"],
             "title_lower": ["inception", "the dark knight"],
-            "genres": [["Action"], ["Crime"]]
+            "genres": [["Action"], ["Crime"]],
+            "tags": ["dream heist action inception", "batman crime drama darkknight"]
         })
         mock_sim = np.array([[1.0, 0.8], [0.8, 1.0]])
 
