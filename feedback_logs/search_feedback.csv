@@ -125,3 +125,9 @@ timestamp,query,matched_title,recommendations_count,latency_ms,status
 2026-04-26T10:47:13.573816,Brad pitt,Burn After Reading,10,3267.57,success
 2026-04-26T11:04:07.186873,Leonardo Dicaprio,Catch Me If You Can,10,3824.45,success
 2026-04-26T11:04:24.810117,TOm Hanks,The Da Vinci Code,10,4278.12,success
+2026-04-26T15:12:59.922199,Prestidge,The Prestige,10,3444.82,success
+2026-04-26T15:13:21.746669,Inception,Inception,10,2757.79,success
+2026-04-26T16:04:54.077917,Grave of the Fireflies,The Game of Their Lives,10,6872.43,success
+2026-04-26T16:05:13.825962,your name,Your Highness,10,3163.16,success
+2026-04-26T16:05:37.341726,Jurassic park,Jurassic Park,10,3730.87,success
+2026-04-26T16:05:41.261301,Jurassic park,Jurassic Park,10,3880.92,success

@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-04-26T09:59:26.717401",
+  "timestamp": "2026-04-26T16:05:13.840497",
   "drift_detected": true,
   "drift_signals": [
     "Query length mean drifted 99.7%",
     "Query length variance drifted 100.0%",
-    "Low positive feedback rate: 1.7%"
+    "Low positive feedback rate: 1.5%"
   ],
   "drift_scores": {
-    "query_length_mean_drift": 0.9973,
+    "query_length_mean_drift": 0.9972,
     "query_length_variance_drift": 1.0
   },
   "current_stats": {
     "sufficient_data": true,
-    "total_queries": 120,
+    "total_queries": 130,
     "positive_count": 2,
-    "positive_rate": 0.0167,
-    "query_length_mean": 1.6166666666666667,
-    "query_length_variance": 0.5030555555555555,
-    "avg_latency_ms": 5435.410666666667,
-    "success_rate": 0.9916666666666667,
+    "positive_rate": 0.0154,
+    "query_length_mean": 1.646153846153846,
+    "query_length_variance": 0.5209467455621302,
+    "avg_latency_ms": 5403.499692307692,
+    "success_rate": 0.9923076923076923,
     "not_found_rate": 0.0,
-    "unique_queries": 74
+    "unique_queries": 81
   },
   "baseline_path": "/app/ml_pipeline/model/baseline_statistics.json",
   "recommendation": "RETRAIN"
