@@ -1,0 +1,15 @@
+# MLproject
+name: cinematch-recommendation
+
+python_env:
+  requirements: requirements.txt
+
+entry_points:
+  train:
+    command: "python ml_pipeline/train.py"
+
+  preprocess:
+    command: "python ml_pipeline/preprocess.py"
+
+  eda:
+    command: "python ml_pipeline/feature_store/eda.py"

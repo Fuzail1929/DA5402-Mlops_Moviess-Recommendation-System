@@ -1,14 +1,15 @@
 // =============================
-// MAIN CONTROLLER (FASTAPI CONNECT)
+// MAIN CONTROLLER
 // =============================
-
 console.log("JS WORKING");
 
 let animFrameId = null;
 let userTouched = false;
 
+// =============================
+// GET RECOMMENDATIONS
+// =============================
 async function getRecommendations(movieName) {
-
     if (!movieName) {
         alert("Please enter a movie name");
         return;
@@ -18,29 +19,21 @@ async function getRecommendations(movieName) {
         const response = await fetch(
             `/api/recommend?movie=${encodeURIComponent(movieName)}`
         );
-        
-        // Also handle non-OK responses properly
+
         if (!response.ok) {
             const err = await response.json();
             alert(`Error: ${err.detail || "Something went wrong"}`);
             return;
         }
-        
-        console.log("STATUS:", response.status);
-        const data = await response.json();
-        console.log("DATA:", data);
 
+        const data = await response.json();
         displayRecommendations(data);
 
-        // Scroll page down to recommendations section
         document.getElementById("recommendations").scrollIntoView({
             behavior: "smooth"
         });
 
-        // Wait for cards to render, then start conveyor scroll
-        setTimeout(() => {
-            startConveyorScroll();
-        }, 1000);
+        setTimeout(() => { startConveyorScroll(); }, 1000);
 
     } catch (error) {
         console.error("Error:", error);
@@ -49,8 +42,64 @@ async function getRecommendations(movieName) {
 }
 
 // =============================
+// GENRE EXPLORE
+// Sends genre directly to backend
+// =============================
+async function searchByGenre(genre) {
+    const input = document.getElementById("searchInput");
+    if (input) input.value = genre.charAt(0).toUpperCase() + genre.slice(1) + " movies";
+
+    try {
+        const response = await fetch(
+            `/api/recommend?movie=${encodeURIComponent(genre)}`
+        );
+
+        if (!response.ok) {
+            const err = await response.json();
+            alert(`No movies found for: ${genre}`);
+            return;
+        }
+
+        const data = await response.json();
+        displayRecommendations(data);
+
+        document.getElementById("recommendations").scrollIntoView({
+            behavior: "smooth"
+        });
+
+        setTimeout(() => { startConveyorScroll(); }, 1000);
+
+    } catch (error) {
+        console.error("Genre search error:", error);
+        alert("Backend not running");
+    }
+}
+
+// =============================
+// SWITCH VIEW (grid/list)
+// =============================
+function switchView(viewType) {
+    const gridBtn = document.querySelector('[data-view="grid"]');
+    const listBtn = document.querySelector('[data-view="list"]');
+    const container = document.getElementById("recommendationsContainer");
+
+    if (!container) return;
+
+    if (viewType === "grid") {
+        container.classList.remove("list-view");
+        container.classList.add("grid-view");
+        if (gridBtn) { gridBtn.classList.add("active"); }
+        if (listBtn) { listBtn.classList.remove("active"); }
+    } else {
+        container.classList.remove("grid-view");
+        container.classList.add("list-view");
+        if (listBtn) { listBtn.classList.add("active"); }
+        if (gridBtn) { gridBtn.classList.remove("active"); }
+    }
+}
+
+// =============================
 // CONVEYOR BELT SCROLL
-// one direction, slow, loops back silently
 // =============================
 function startConveyorScroll() {
     const wrapper = document.querySelector(".horizontal-scroll-wrapper");
@@ -59,31 +108,24 @@ function startConveyorScroll() {
     stopConveyorScroll();
     userTouched = false;
 
-    const speed = 0.8; // px per frame — lower = slower crawl
+    const speed = 0.8;
 
     function step() {
         if (userTouched) return;
-
         const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-
-        // Silently jump back to start when we reach the end
         if (wrapper.scrollLeft >= maxScroll - 1) {
             wrapper.scrollLeft = 0;
         } else {
             wrapper.scrollLeft += speed;
         }
-
         animFrameId = requestAnimationFrame(step);
     }
 
     animFrameId = requestAnimationFrame(step);
 
-    // Pause when user interacts
     wrapper.addEventListener("mousedown", pauseScroll);
     wrapper.addEventListener("touchstart", pauseScroll);
     wrapper.addEventListener("wheel", pauseScroll);
-
-    // Resume after user stops interacting
     wrapper.addEventListener("mouseup", resumeScroll);
     wrapper.addEventListener("touchend", resumeScroll);
 }
@@ -94,11 +136,10 @@ function pauseScroll() {
 }
 
 function resumeScroll() {
-    // Small delay so user can finish their manual scroll
     setTimeout(() => {
         userTouched = false;
         startConveyorScroll();
-    }, 800); // resumes 0.8s after user lets go
+    }, 800);
 }
 
 function stopConveyorScroll() {
@@ -109,26 +150,23 @@ function stopConveyorScroll() {
 }
 
 // =============================
-// HANDLE CAROUSEL CLICK
+// CAROUSEL CLICK
 // =============================
 function selectMovie(movieName) {
     const input = document.getElementById("searchInput");
     if (input) input.value = movieName;
-
     getRecommendations(movieName);
 }
 
+// =============================
+// SWIPER INIT
+// =============================
 document.addEventListener("DOMContentLoaded", function () {
     new Swiper(".movieSwiper", {
         slidesPerView: "auto",
         spaceBetween: 20,
         loop: true,
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-        autoplay: {
-            delay: 250,
-        },
+        pagination: { el: ".swiper-pagination", clickable: true },
+        autoplay: { delay: 2500 },
     });
 });

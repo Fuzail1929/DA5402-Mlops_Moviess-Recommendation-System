@@ -12,6 +12,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth
     volumes:
       - ./dags:/opt/airflow/dags
       - ./airflow_db:/opt/airflow
@@ -116,6 +117,15 @@ services:
     restart: always
     ports:
       - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     networks:
       - cinematch-network
 
@@ -138,10 +148,15 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     container_name: cinematch-backend
+    depends_on:
+      - mlflow
     env_file:
       - .env
     ports:
       - "8001:8000"
+    volumes:
+      - ./backend_logs:/app/logs
+      - ./feedback_logs:/app/backend/logs/feedback  # feedback CSVs visible locally
     networks:
       - cinematch-network
 
@@ -154,6 +169,8 @@ services:
       - "5050:80"
     depends_on:
       - backend
+    volumes:
+      - ./frontend_logs:/var/log/nginx    # nginx access/error logs
     networks:
       - cinematch-network
 

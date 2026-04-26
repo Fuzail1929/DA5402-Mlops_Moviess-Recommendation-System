@@ -60,15 +60,15 @@ async function displayRecommendations(data) {
                         class="movie-poster"
                         alt="${movie.title}"
                     >
+                    <div class="movie-rating-badge">⭐ ${rating}</div>
                 </div>
 
                 <div class="movie-details">
                     <h5 class="movie-title">${movie.title}</h5>
-                    <p class="movie-meta">⭐ ${rating}</p>
                     <p class="movie-overview-text">${overview}</p>
-                    <button class="btn btn-sm btn-primary w-100 mt-2"
-                        onclick="addToFavorites('${safeTitle}')">
-                        ❤️ Add to Favorites
+                    <button class="btn-fav-gold" id="fav-btn-${index}"
+                        onclick="addToFavorites('${safeTitle}', 'fav-btn-${index}')">
+                        ♥ Add to Favorites
                     </button>
                 </div>
 

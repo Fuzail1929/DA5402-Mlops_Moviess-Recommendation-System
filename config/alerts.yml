@@ -210,3 +210,105 @@ groups:
         annotations:
           summary: "Prometheus monitoring is down"
           description: "Prometheus itself is unreachable. All monitoring is blind. Restart the prometheus container immediately."
+  # ===========================
+  # DATA DRIFT ALERTS
+  # ===========================
+  - name: cinematch_drift_alerts
+    rules:
+
+      - alert: HighNotFoundRate
+        expr: >
+          rate(cinematch_recommendations_total{status="not_found"}[10m]) /
+          rate(cinematch_recommendations_total[10m]) > 0.30
+        for: 5m
+        labels:
+          severity: warning
+          team: ml
+          reason: data_drift
+        annotations:
+          summary: "High not-found rate — possible data drift detected"
+          description: "More than 30% of queries return no results. User queries may have drifted from training data distribution. Consider retraining."
+
+      - alert: RecommendationQualityDrop
+        expr: >
+          rate(cinematch_recommendations_total{status="success"}[30m]) /
+          rate(cinematch_recommendations_total[30m]) < 0.70
+        for: 10m
+        labels:
+          severity: warning
+          team: ml
+          reason: data_drift
+        annotations:
+          summary: "Recommendation success rate dropped below 70%"
+          description: "Success rate below 70% for 10 minutes. Model performance may be degrading. Check for data drift and consider retraining."
+
+      - alert: ModelRetrainingRequired
+        expr: >
+          rate(cinematch_recommendations_total{status="not_found"}[1h]) /
+          rate(cinematch_recommendations_total[1h]) > 0.50
+        for: 15m
+        labels:
+          severity: critical
+          team: ml
+          reason: data_drift
+        annotations:
+          summary: "CRITICAL — Model retraining required"
+          description: "Over 50% of queries are not found for 15 minutes. Severe data drift detected. Trigger Airflow retraining DAG immediately."
+
+      - alert: TMDBFallbackRateHigh
+        expr: >
+          rate(cinematch_tmdb_requests_total{status="fallback"}[10m]) /
+          rate(cinematch_tmdb_requests_total[10m]) > 0.40
+        for: 5m
+        labels:
+          severity: warning
+          team: ml
+          reason: data_drift
+        annotations:
+          summary: "High TMDB fallback rate — new movies not in dataset"
+          description: "More than 40% of TMDB requests return no poster. Dataset may be outdated. New popular movies not in training data."
+
+  # ===========================
+  # GRAFANA ALERT CONDITIONS
+  # (Evaluated by Prometheus, visualized in Grafana)
+  # ===========================
+  - name: cinematch_grafana_alerts
+    rules:
+
+      - alert: ErrorRateExceeds5Percent
+        expr: >
+          (rate(cinematch_requests_total{status_code=~"4..|5.."}[5m]) /
+          rate(cinematch_requests_total[5m])) * 100 > 5
+        for: 2m
+        labels:
+          severity: critical
+          team: backend
+          grafana_panel: "error_rate"
+        annotations:
+          summary: "Grafana Alert — Error rate exceeded 5%"
+          description: "API error rate is above 5% threshold as defined in evaluation guidelines. Immediate investigation required."
+
+      - alert: InferenceP95LatencyHigh
+        expr: >
+          histogram_quantile(0.95,
+            rate(cinematch_request_latency_seconds_bucket[5m])
+          ) * 1000 > 200
+        for: 3m
+        labels:
+          severity: warning
+          team: ml
+          grafana_panel: "latency_percentiles"
+        annotations:
+          summary: "Grafana Alert — p95 latency exceeded 200ms"
+          description: "95th percentile latency is above 200ms SLO. Most users experiencing slow responses."
+
+      - alert: ZeroThroughput
+        expr: rate(cinematch_requests_total[5m]) == 0
+        for: 3m
+        labels:
+          severity: critical
+          team: backend
+          grafana_panel: "request_rate"
+        annotations:
+          summary: "Grafana Alert — Zero request throughput"
+          description: "No requests received in last 5 minutes. Frontend may be disconnected from backend."

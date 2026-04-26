@@ -6,11 +6,13 @@ fastapi==0.110.0
 uvicorn==0.27.1
 python-dotenv==1.0.1
 requests==2.31.0
+python-multipart==0.0.9
 
 # ML
 scikit-learn==1.4.1.post1
 pandas==2.2.1
 numpy==1.26.4
+scipy==1.13.0
 
 # MLflow
 mlflow==2.12.2
@@ -20,3 +22,7 @@ prometheus-client==0.20.0
 
 # Utils
 python-multipart==0.0.9
+pytest==8.4.2
+
+
+

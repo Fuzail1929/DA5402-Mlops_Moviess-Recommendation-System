@@ -44,6 +44,58 @@ stages:
     outs:
     - path: ml_pipeline/feature_store
       hash: md5
-      md5: d9a22a9715f058c436fdf46d0b95aa08.dir
-      size: 2996591
-      nfiles: 4
+      md5: 7607e08c0c83b2c68cb8e0ab26b5efb3.dir
+      size: 68725431
+      nfiles: 70
+  train:
+    cmd: "python -c \"import sys; sys.path.insert(0, 'ml_pipeline'); from train import
+      train; train()\"\n"
+    deps:
+    - path: ml_pipeline/feature_store
+      hash: md5
+      md5: 7607e08c0c83b2c68cb8e0ab26b5efb3.dir
+      size: 68725431
+      nfiles: 70
+    - path: ml_pipeline/train.py
+      hash: md5
+      md5: 60e6886f29214ff86022e53b8994b204
+      size: 18775
+    outs:
+    - path: ml_pipeline/model/baseline_statistics.json
+      hash: md5
+      md5: d18f88d91343f98d16a4a6f8e3572238
+      size: 1050
+    - path: ml_pipeline/model/feature_impact.json
+      hash: md5
+      md5: f70e4eccfd0e93745db4335643476301
+      size: 631
+    - path: ml_pipeline/model/model_version.json
+      hash: md5
+      md5: ec0dfa218388f521e3fad2943a8988ad
+      size: 947
+    - path: ml_pipeline/model/movies.pkl
+      hash: md5
+      md5: d7e8f4783251cbfe3eac95f46ce8463d
+      size: 5644983
+    - path: ml_pipeline/model/similarity.pkl
+      hash: md5
+      md5: 8e9104d4e7f40e3c059f0bdb33bb601a
+      size: 184781251
+    - path: ml_pipeline/model/similarity_sparse.pkl
+      hash: md5
+      md5: e64ef4b3c3c665d9633e44713c2d025d
+      size: 1173090
+    - path: ml_pipeline/model/vectorizer.pkl
+      hash: md5
+      md5: 11fa12acfa131bbed95d662c1d98b45a
+      size: 4426155
+  evaluate:
+    cmd: "python -c \"import json; f=open('ml_pipeline/model/model_version.json');
+      v=json.load(f); print('Genre match rate:', v.get('avg_genre_match_rate')); print('Most
+      important feature:', v.get('most_important_feature')); print('Memory reduction:',
+      v.get('memory_reduction_pct'), '%')\"\n"
+    deps:
+    - path: ml_pipeline/model/model_version.json
+      hash: md5
+      md5: ec0dfa218388f521e3fad2943a8988ad
+      size: 947

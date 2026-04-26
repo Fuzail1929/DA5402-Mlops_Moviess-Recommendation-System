@@ -1,0 +1,121 @@
+<svg width="680" height="840" viewBox="0 0 680 840" xmlns="http://www.w3.org/2000/svg">
+<title>CineMatch System Architecture</title>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<style>
+* { font-family: Arial, sans-serif; }
+.th { font-size: 13px; font-weight: 700; }
+.ts { font-size: 11px; font-weight: 400; fill: #444; }
+.arr { stroke: #888; stroke-width: 1.2; fill: none; marker-end: url(#arrow); }
+</style>
+</defs>
+<rect width="680" height="840" fill="#f7f8fa"/>
+
+<!-- USER -->
+<rect x="290" y="16" width="100" height="34" rx="8" fill="#e2e2e2" stroke="#aaa" stroke-width="0.8"/>
+<text class="th" x="340" y="37" text-anchor="middle" fill="#222">User</text>
+<line x1="340" y1="50" x2="340" y2="78" class="arr"/>
+
+<!-- FRONTEND -->
+<rect x="60" y="82" width="560" height="54" rx="10" fill="#d4f0e4" stroke="#1d9e75" stroke-width="0.8"/>
+<text class="th" x="340" y="104" text-anchor="middle" fill="#085041">Frontend — Nginx (port 5050)</text>
+<text class="ts" x="340" y="124" text-anchor="middle">CineMatch UI · search · favorites · genre browse · dark theme</text>
+<line x1="340" y1="136" x2="340" y2="162" class="arr"/>
+<text class="ts" x="356" y="151" fill="#666">/api/*</text>
+
+<!-- BACKEND -->
+<rect x="60" y="166" width="560" height="70" rx="10" fill="#e8e6ff" stroke="#534ab7" stroke-width="0.8"/>
+<text class="th" x="340" y="190" text-anchor="middle" fill="#3c3489">Backend — FastAPI (port 8001)</text>
+<text class="ts" x="340" y="208" text-anchor="middle">/recommend · /health · /ready · /metrics · /feedback · /drift · /retrain</text>
+<text class="ts" x="340" y="226" text-anchor="middle">Feedback loop · drift detection · auto-retrain trigger · TMDB integration</text>
+
+<!-- TMDB -->
+<line x1="620" y1="201" x2="642" y2="201" class="arr"/>
+<rect x="644" y="186" width="28" height="30" rx="5" fill="#fef0d0" stroke="#ba7517" stroke-width="0.8"/>
+<text class="ts" x="658" y="205" text-anchor="middle" fill="#633806">TMDB</text>
+
+<!-- Backend → ML Pipeline -->
+<line x1="230" y1="236" x2="230" y2="286" class="arr"/>
+<!-- Backend → MLflow diagonal -->
+<line x1="480" y1="236" x2="533" y2="286" class="arr"/>
+
+<!-- Backend → Prometheus: go LEFT then DOWN then RIGHT into Prometheus box -->
+<path d="M60 210 L40 210 L40 672 L74 672" stroke="#888" stroke-width="1.2" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 2"/>
+<text class="ts" x="28" y="445" fill="#888" text-anchor="middle" transform="rotate(-90,28,445)">scrape /metrics</text>
+
+<!-- ML PIPELINE -->
+<rect x="60" y="290" width="340" height="120" rx="10" fill="#ddeeff" stroke="#185fa5" stroke-width="0.8"/>
+<text class="th" x="230" y="312" text-anchor="middle" fill="#0c447c">ML Pipeline</text>
+<rect x="76" y="324" width="90" height="42" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="0.6"/>
+<text class="th" x="121" y="339" text-anchor="middle" fill="#0c447c">recommend.py</text>
+<text class="ts" x="121" y="357" text-anchor="middle">fuzzy match</text>
+<rect x="180" y="324" width="90" height="42" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="0.6"/>
+<text class="th" x="225" y="339" text-anchor="middle" fill="#0c447c">train.py</text>
+<text class="ts" x="225" y="357" text-anchor="middle">TF-IDF · sparse</text>
+<rect x="284" y="324" width="100" height="42" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="0.6"/>
+<text class="th" x="334" y="339" text-anchor="middle" fill="#0c447c">preprocess.py</text>
+<text class="ts" x="334" y="357" text-anchor="middle">feature store</text>
+<text class="ts" x="230" y="400" text-anchor="middle">movies.pkl · similarity.pkl · vectorizer.pkl</text>
+
+<!-- ML → MLflow -->
+<line x1="400" y1="350" x2="444" y2="350" class="arr"/>
+
+<!-- MLFLOW -->
+<rect x="446" y="290" width="174" height="120" rx="10" fill="#fde8df" stroke="#993c1d" stroke-width="0.8"/>
+<text class="th" x="533" y="312" text-anchor="middle" fill="#711b13">MLflow (port 5001)</text>
+<text class="ts" x="533" y="332" text-anchor="middle">Experiment tracking</text>
+<text class="ts" x="533" y="350" text-anchor="middle">Model registry</text>
+<text class="ts" x="533" y="368" text-anchor="middle">Production / Staging stages</text>
+<text class="ts" x="533" y="386" text-anchor="middle">Artifacts storage</text>
+
+<!-- ML → Airflow -->
+<line x1="180" y1="410" x2="180" y2="460" class="arr"/>
+
+<!-- AIRFLOW -->
+<rect x="60" y="464" width="340" height="88" rx="10" fill="#dff0d0" stroke="#3b6d11" stroke-width="0.8"/>
+<text class="th" x="230" y="488" text-anchor="middle" fill="#27500a">Airflow (port 8080)</text>
+<text class="ts" x="230" y="508" text-anchor="middle">preprocess_pipeline — daily</text>
+<text class="ts" x="230" y="526" text-anchor="middle">training_pipeline — weekly · auto-retrain on drift</text>
+<text class="ts" x="230" y="544" text-anchor="middle">promote to Production or rollback</text>
+
+<!-- DVC -->
+<rect x="446" y="464" width="174" height="88" rx="10" fill="#eeede6" stroke="#888780" stroke-width="0.8"/>
+<text class="th" x="533" y="488" text-anchor="middle" fill="#2c2c2a">DVC + Git</text>
+<text class="ts" x="533" y="508" text-anchor="middle">Data versioning v1/v2/v3</text>
+<text class="ts" x="533" y="526" text-anchor="middle">Model artifact versioning</text>
+<text class="ts" x="533" y="544" text-anchor="middle">dvc.yaml reproducible pipeline</text>
+<line x1="400" y1="508" x2="444" y2="508" class="arr"/>
+
+<!-- MONITORING DASHED -->
+<rect x="60" y="592" width="560" height="120" rx="10" fill="none" stroke="#bbb" stroke-width="0.8" stroke-dasharray="5 3"/>
+<text class="ts" x="80" y="610" fill="#888">Monitoring stack</text>
+
+<rect x="76" y="620" width="118" height="76" rx="8" fill="#fde8df" stroke="#993c1d" stroke-width="0.6"/>
+<text class="th" x="135" y="642" text-anchor="middle" fill="#711b13">Prometheus</text>
+<text class="ts" x="135" y="660" text-anchor="middle">port 9090</text>
+<text class="ts" x="135" y="676" text-anchor="middle">15+ metrics · alerts</text>
+
+<rect x="206" y="620" width="118" height="76" rx="8" fill="#fef0d0" stroke="#ba7517" stroke-width="0.6"/>
+<text class="th" x="265" y="642" text-anchor="middle" fill="#633806">Grafana</text>
+<text class="ts" x="265" y="660" text-anchor="middle">port 3001</text>
+<text class="ts" x="265" y="676" text-anchor="middle">18-panel dashboard</text>
+<line x1="194" y1="658" x2="204" y2="658" class="arr"/>
+
+<rect x="336" y="620" width="118" height="76" rx="8" fill="#eeede6" stroke="#888780" stroke-width="0.6"/>
+<text class="th" x="395" y="642" text-anchor="middle" fill="#2c2c2a">Node Exporter</text>
+<text class="ts" x="395" y="660" text-anchor="middle">port 9100</text>
+<text class="ts" x="395" y="676" text-anchor="middle">CPU · mem · disk</text>
+
+<rect x="466" y="620" width="118" height="76" rx="8" fill="#eeede6" stroke="#888780" stroke-width="0.6"/>
+<text class="th" x="525" y="642" text-anchor="middle" fill="#2c2c2a">cAdvisor</text>
+<text class="ts" x="525" y="660" text-anchor="middle">port 8081</text>
+<text class="ts" x="525" y="676" text-anchor="middle">container metrics</text>
+
+<!-- CI/CD -->
+<rect x="200" y="752" width="280" height="30" rx="8" fill="#ddeeff" stroke="#185fa5" stroke-width="0.8"/>
+<text class="th" x="340" y="771" text-anchor="middle" fill="#0c447c">GitHub Actions CI/CD</text>
+<text class="ts" x="340" y="744" text-anchor="middle" fill="#666">test · validate configs · build Docker — on every push to main</text>
+
+</svg>

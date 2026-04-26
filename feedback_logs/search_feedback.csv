@@ -1,0 +1,127 @@
+timestamp,query,matched_title,recommendations_count,latency_ms,status
+2026-04-23T20:02:06.110730,inception,Inception,10,7239.45,success
+2026-04-23T20:02:06.126035,inception,Inception,10,5127.23,success
+2026-04-23T20:02:09.050042,inception,Inception,10,3005.96,success
+2026-04-23T20:04:50.933678,Ready,RED,10,5086.13,success
+2026-04-23T20:05:07.968230,Golmaal,Colombiana,10,3554.66,success
+2026-04-23T20:05:07.982794,Golmaal,Colombiana,10,5137.69,success
+2026-04-23T20:05:35.474525,Fast & Furius,2 Fast 2 Furious,10,5245.82,success
+2026-04-23T20:05:59.164862,wwe,Water,10,4702.06,success
+2026-04-23T20:06:17.392279,almighty bruno,Midnight Run,10,4468.53,success
+2026-04-23T20:06:18.512291,almighty bruno,Midnight Run,10,4200.19,success
+2026-04-23T20:06:41.844251,Fight club,Fight Club,10,5245.7,success
+2026-04-23T20:06:57.065877,Tyler Durden,Little Children,10,3627.97,success
+2026-04-23T20:07:14.909332,it,Hits,10,4047.58,success
+2026-04-23T20:07:46.885377,Friends,Reds,10,3676.17,success
+2026-04-23T20:08:07.666409,Virginia,I Origins,10,3861.65,success
+2026-04-23T20:08:33.097064,Scorpion,Sicario,10,4180.51,success
+2026-04-25T07:56:55.504188,inception,Inception,10,6234.15,success
+2026-04-25T07:56:55.544724,inception,Inception,10,2389.07,success
+2026-04-25T07:56:56.596342,inception,Inception,10,2495.1,success
+2026-04-25T07:57:27.112020,The Dark Knight,The Dark Knight,10,3062.96,success
+2026-04-25T07:57:27.811011,The Dark Knight,The Dark Knight,10,2077.94,success
+2026-04-25T07:57:29.244851,The Dark Knight,The Dark Knight,10,2231.05,success
+2026-04-25T07:59:45.060686,loki,Lolita,10,3529.89,success
+2026-04-25T08:01:24.653986,romance,Trance,10,3076.25,success
+2026-04-25T08:05:22.481128,Action,Vacation,10,3090.81,success
+2026-04-25T08:09:12.247588,romance,Trance,10,2254.58,success
+2026-04-25T08:41:38.011481,romance,Proof of Life,10,3088.32,success
+2026-04-25T08:41:53.245859,superhero,Daybreakers,10,2480.92,success
+2026-04-25T08:42:05.855527,drama,Blood and Wine,10,2510.68,success
+2026-04-25T08:45:00.723794,loki,Lolita,10,1998.98,success
+2026-04-25T08:45:20.621017,Tom Hiddleston,Tombstone,10,3798.67,success
+2026-04-25T08:45:28.495017,Tom Hiddleston,Tombstone,10,9452.55,success
+2026-04-25T08:45:42.905654,RobertDownyjr,Rob Roy,10,2625.96,success
+2026-04-25T08:45:57.173606,romance,Whatever It Takes,10,2569.62,success
+2026-04-25T08:46:27.496591,scifi,Capricorn One,10,2561.49,success
+2026-04-25T09:44:19.234989,romance,The Broadway Melody,10,3349.95,success
+2026-04-25T09:53:21.939260,romance,,0,0,error
+2026-04-25T10:31:12.743659,Inception,Inception,10,9673.26,success
+2026-04-25T10:31:15.274270,Inception,Inception,10,2461.8,success
+2026-04-25T10:37:05.330504,drama,The Second Mother,10,2850.57,success
+2026-04-25T10:45:42.629461,Inception,Inception,10,2286.41,success
+2026-04-25T10:45:45.106804,Interstellar,Interstellar,10,2950.03,success
+2026-04-25T11:06:52.391105,inception,Inception,10,4584.09,success
+2026-04-25T11:16:27.991829,Interstellar,Interstellar,10,4610.19,success
+2026-04-25T11:27:54.808700,The Dark Knight,The Dark Knight,10,2809.31,success
+2026-04-25T11:38:48.091691,Pulp Fiction,Pulp Fiction,10,3724.43,success
+2026-04-25T15:44:46.850519,inception,Inception,10,8183.79,success
+2026-04-25T15:50:47.018136,Iron man,Iron Man,10,13376.58,success
+2026-04-25T15:50:50.182401,Iron man,Iron Man,10,3127.48,success
+2026-04-25T16:06:31.419767,The Shawshank Redemption,The Shawshank Redemption,10,4313.55,success
+2026-04-25T16:06:38.653013,The Shawshank Redemption,The Shawshank Redemption,10,2515.36,success
+2026-04-25T16:14:13.589505,Inception,Inception,10,3858.25,success
+2026-04-25T16:20:21.443982,Leonardo DiCaprio,Liar Liar,10,5029.63,success
+2026-04-25T16:20:39.053091,LeonardoDiCaprio,FearDotCom,10,3835.97,success
+2026-04-25T16:37:47.932020,Inception,Inception,10,10823.15,success
+2026-04-25T16:37:54.288952,Inception,Inception,10,6332.22,success
+2026-04-25T17:01:03.820222,bolt,Bolt,10,12542.99,success
+2026-04-25T17:18:00.468039,Inception,Inception,10,12848.68,success
+2026-04-25T17:19:20.770754,Inception,Inception,10,6524.88,success
+2026-04-25T17:28:46.209614,Leonardo Dicapario,Sardaarji,10,11405.68,success
+2026-04-25T17:29:03.528171,Leonardo Dicapario,Sardaarji,10,7224.12,success
+2026-04-25T17:29:10.894147,Leonardo Dicapario,Sardaarji,10,7267.34,success
+2026-04-25T17:29:15.159443,Leonardo Dicapario,Sardaarji,10,13119.82,success
+2026-04-25T17:34:00.154125,Leonardodicapario,Sardaarji,10,10133.84,success
+2026-04-25T17:34:15.987606,Leonardodicaprio,FearDotCom,10,8028.27,success
+2026-04-25T17:34:47.449496,hermione,The Prince,10,6281.35,success
+2026-04-25T17:36:09.080437,Hermoine,The Rookie,10,5507.64,success
+2026-04-25T17:38:29.700400,TomHanks,Tomcats,10,8733.91,success
+2026-04-25T18:02:54.032229,Scarlett Johansson,The Island,10,12436.48,success
+2026-04-25T18:03:36.428195,Leonardo Dicaprio,Revolutionary Road,10,7713.69,success
+2026-04-25T18:03:53.431244,Leonardo Dicaprio,Revolutionary Road,10,6901.19,success
+2026-04-25T18:03:57.831496,Leonardo Dicaprio,Revolutionary Road,10,4228.75,success
+2026-04-25T18:04:25.664115,Hermoine,The Rookie,10,6404.75,success
+2026-04-25T18:04:46.886374,Harry potter,Harper,10,6188.35,success
+2026-04-25T18:05:54.377799,jack Sparrow,Jackie Brown,10,7624.37,success
+2026-04-25T18:06:16.189727,johnny Depp,Pirates of the Caribbean: On Stranger Tides,10,6889.18,success
+2026-04-25T18:06:56.849730,jack sparrow,Jackie Brown,10,8116.94,success
+2026-04-25T18:07:24.248263,loki,Lolita,10,5252.25,success
+2026-04-25T18:07:58.951803,Tom Hiddleston,War Horse,10,5444.8,success
+2026-04-25T18:08:47.351343,danielradcliffe,The Woman in Black,10,5429.53,success
+2026-04-25T18:09:14.413712,Emma Watson,The Tale of Despereaux,10,7450.76,success
+2026-04-25T18:09:33.469940,Harry potter,Harper,10,7031.57,success
+2026-04-25T18:09:39.923085,Harry potter,Harper,10,6378.63,success
+2026-04-25T18:09:50.214851,Hary potter,Harper,10,5821.14,success
+2026-04-25T18:10:52.310306,Hary potter movie,Date Movie,10,7624.23,success
+2026-04-25T18:10:58.985977,Hary potter movie,Date Movie,10,6635.16,success
+2026-04-25T18:11:34.619635,Prisoner of Azabakazen,The Prisoner of Zenda,10,4786.07,success
+2026-04-25T18:12:21.776791,Daniel Radcliffe,The Woman in Black,10,6441.41,success
+2026-04-25T18:12:43.531672,Philosopher stone,Gladiator,10,6506.98,success
+2026-04-25T18:13:07.937198,harry potter and Philosopher's stone,Harry Potter and the Philosopher's Stone,10,4688.75,success
+2026-04-25T18:53:43.479185,hermoine,The Rookie,10,16219.62,success
+2026-04-25T18:53:58.698201,Loki,War Horse,10,4550.14,success
+2026-04-25T18:54:47.378755,Peter parker,Parker,10,3990.53,success
+2026-04-25T18:55:01.549608,Peter Parker,Parker,10,3127.32,success
+2026-04-25T18:55:17.368032,tobeymaguire,The Good German,10,4223.91,success
+2026-04-26T08:42:55.249086,Welcome,Thunder and the House of Magic,10,10802.39,success
+2026-04-26T08:43:11.580168,jumanji,Manito,10,5797.07,success
+2026-04-26T08:43:27.357369,Simpsons,Impostor,10,3892.11,success
+2026-04-26T08:43:49.208997,The Simpsons,The Simpsons Movie,10,4033.08,success
+2026-04-26T08:44:12.976517,MIB,Subconscious,10,3656.87,success
+2026-04-26T08:44:26.482290,WillSmith,Independence Day,10,2874.69,success
+2026-04-26T08:44:42.562854,Tom Hanks,Larry Crowne,10,3328.1,success
+2026-04-26T08:51:49.943605,polar express,The Polar Express,10,3722.29,success
+2026-04-26T08:51:52.067160,polar express,The Polar Express,10,2105.51,success
+2026-04-26T08:52:03.038508,finding nemo,Finding Nemo,10,2947.66,success
+2026-04-26T08:52:05.474027,finding nemo,Finding Nemo,10,2413.87,success
+2026-04-26T08:53:23.130475,Bart Simpson,The Simpsons Movie,10,2672.89,success
+2026-04-26T08:53:48.491603,Spongebob Squarepaint,The SpongeBob SquarePants Movie,10,2550.66,success
+2026-04-26T08:53:54.807821,Spongebob Squarepant,The SpongeBob SquarePants Movie,10,2282.58,success
+2026-04-26T08:54:04.673335,Spongebob Squarepants,The SpongeBob SquarePants Movie,10,2566.22,success
+2026-04-26T09:08:19.197009,Tom Hanks,Larry Crowne,10,3579.61,success
+2026-04-26T09:08:36.305104,Forrest gump,Larry Crowne,10,2692.21,success
+2026-04-26T09:09:11.096458,Green Mile,The Green Mile,10,3358.53,success
+2026-04-26T09:09:32.320577,Captain Phillips,Captain Phillips,10,3504.24,success
+2026-04-26T09:09:48.593183,Forrest Gumps,Forrest Gump,10,2877.46,success
+2026-04-26T09:18:10.198049,Nolan,Insomnia,10,20994.97,success
+2026-04-26T09:30:55.388827,Captain phillips,Captain Phillips,10,13500.26,success
+2026-04-26T09:30:59.785332,Captain phillips,Captain Phillips,10,4368.9,success
+2026-04-26T09:31:39.070319,Green mile,The Green Mile,10,10265.45,success
+2026-04-26T09:59:26.709361,Tom Hanks,The Da Vinci Code,10,9104.33,success
+2026-04-26T10:02:30.433029,Captain Phillips,Captain Phillips,10,8585.5,success
+2026-04-26T10:03:01.760989,Green Miles,The Green Mile,10,8172.56,success
+2026-04-26T10:44:45.389953,Tom hanks,The Da Vinci Code,10,5839.28,success
+2026-04-26T10:47:13.573816,Brad pitt,Burn After Reading,10,3267.57,success
+2026-04-26T11:04:07.186873,Leonardo Dicaprio,Catch Me If You Can,10,3824.45,success
+2026-04-26T11:04:24.810117,TOm Hanks,The Da Vinci Code,10,4278.12,success
