@@ -131,3 +131,27 @@ timestamp,query,matched_title,recommendations_count,latency_ms,status
 2026-04-26T16:05:13.825962,your name,Your Highness,10,3163.16,success
 2026-04-26T16:05:37.341726,Jurassic park,Jurassic Park,10,3730.87,success
 2026-04-26T16:05:41.261301,Jurassic park,Jurassic Park,10,3880.92,success
+2026-04-26T19:51:28.684150,Tom Hanks,,0,0,error
+2026-04-26T19:51:56.760662,Tom Hanks,,0,0,error
+2026-04-26T19:52:08.483583,Tom Hanks,,0,0,error
+2026-04-26T19:52:08.882104,Tom Hanks,,0,0,error
+2026-04-26T19:52:10.154141,Tom Hanks,,0,0,error
+2026-04-26T19:52:16.837005,Tom Hanks,,0,0,error
+2026-04-26T19:52:27.588468,Tom Hanks,,0,0,error
+2026-04-26T19:52:57.135774,Tom Hanks,,0,0,error
+2026-04-26T19:53:07.733248,Tom Hanks,,0,0,error
+2026-04-26T19:53:08.436221,Tom Hanks,,0,0,error
+2026-04-26T19:53:09.654895,Tom Hanks,,0,0,error
+2026-04-26T19:53:16.571828,Tom Hanks,,0,0,error
+2026-04-26T19:53:28.660413,Tom Hanks,,0,0,error
+2026-04-26T19:53:56.695363,Tom Hanks,,0,0,error
+2026-04-26T19:54:08.504547,Tom Hanks,,0,0,error
+2026-04-26T19:54:08.852631,Tom Hanks,,0,0,error
+2026-04-26T19:54:10.703463,Tom Hanks,,0,0,error
+2026-04-26T19:54:16.026987,Tom Hanks,,0,0,error
+2026-04-26T19:54:28.663782,Tom Hanks,,0,0,error
+2026-04-26T19:54:56.388194,Tom Hanks,,0,0,error
+2026-04-26T19:55:12.777485,Tom Hanks,,0,0,error
+2026-04-26T20:10:35.174200,inception,Inception,10,10661.29,success
+2026-04-26T20:10:37.531207,inception,Inception,10,2343.65,success
+2026-04-26T20:10:50.850928,Tom Hanks,The Da Vinci Code,10,3448.89,success

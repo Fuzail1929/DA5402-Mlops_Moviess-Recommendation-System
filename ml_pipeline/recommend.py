@@ -216,112 +216,86 @@ def recommend(movie: str) -> list:
 
     logger.info(f"Query received: '{query}'")
 
-    with mlflow.start_run(run_name=f"predict-{query_lower[:30]}"):
+    similarity_scores = []
+    final_list        = []
 
-        mlflow.log_param("query", query_lower)
+    # -------------------------
+    # 1. GENRE SEARCH
+    # -------------------------
+    if query_lower in GENRE_QUERIES:
+        logger.info(f"Genre detected: '{query_lower}'")
+        final_list = search_by_genre(query_lower)
 
-        similarity_scores = []
-
+    else:
         # -------------------------
-        # 1. GENRE SEARCH — check first, exact match
+        # 2. CHARACTER NAME CHECK
         # -------------------------
-        if query_lower in GENRE_QUERIES:
-            logger.info(f"Genre detected: '{query_lower}'")
-            mlflow.log_param("search_type", "genre")
-            final_list = search_by_genre(query_lower)
+        if query_lower in CHARACTER_TO_ACTOR:
+            logger.info(f"Character detected: '{query_lower}' → actor search")
+            final_list = search_by_actor_or_character(query_lower)
 
         else:
             # -------------------------
-            # 2. CHARACTER NAME CHECK — check map first
+            # 3. ACTOR PRE-CHECK
             # -------------------------
-            if query_lower in CHARACTER_TO_ACTOR:
-                logger.info(f"Character detected: '{query_lower}' → actor search")
-                mlflow.log_param("search_type", "character")
-                final_list = search_by_actor_or_character(query_lower)
+            query_no_space = query_lower.replace(" ", "").replace("-", "")
+            actor_precheck = movies[movies["tags"].str.contains(query_no_space, case=False, na=False)]
+            is_likely_actor = (
+                len(actor_precheck) >= 3 and
+                query_no_space not in movies["title_lower"].str.replace(" ", "").values
+            )
 
-                if not final_list:
-                    mlflow.log_param("match_found", False)
-                    mlflow.log_metric("recommendations_count", 0)
-                    logger.warning(f"No results for character: '{query}'")
-                    return []
+            if is_likely_actor:
+                logger.info(f"Actor pre-check matched: '{query_lower}' → actor search")
+                final_list = search_by_actor_or_character(query_lower)
 
             else:
                 # -------------------------
-                # 3. ACTOR PRE-CHECK
-                # If query looks like an actor name, skip title search
+                # 4. MOVIE TITLE SEARCH
                 # -------------------------
-                query_no_space = query_lower.replace(" ", "").replace("-", "")
+                titles      = movies["title"].str.lower().tolist()
+                title_match = get_close_matches(query_lower, titles, n=1, cutoff=0.6)
 
-                actor_precheck = movies[movies["tags"].str.contains(query_no_space, case=False, na=False)]
-                is_likely_actor = (
-                    len(actor_precheck) >= 3 and
-                    query_no_space not in movies["title_lower"].str.replace(" ", "").values
-                )
-
-                if is_likely_actor:
-                    logger.info(f"Actor pre-check matched: '{query_lower}' → going to actor search")
-                    mlflow.log_param("search_type", "actor_character")
-                    final_list = search_by_actor_or_character(query_lower)
-
-                    if not final_list:
-                        mlflow.log_param("match_found", False)
-                        mlflow.log_metric("recommendations_count", 0)
-                        logger.warning(f"No results for actor: '{query}'")
-                        return []
+                if title_match:
+                    matched_title  = title_match[0]
+                    logger.info(f"Title match: '{query_lower}' → '{matched_title}'")
+                    searched_title = movies[movies["title"].str.lower() == matched_title].iloc[0]["title"]
+                    index          = movies[movies["title"].str.lower() == matched_title].index[0]
+                    distances      = sorted(enumerate(similarity[index]), key=lambda x: x[1], reverse=True)
+                    recommendations   = []
+                    similarity_scores = []
+                    for i in distances[1:10]:
+                        recommendations.append(movies.iloc[i[0]].title)
+                        similarity_scores.append(round(i[1], 4))
+                    final_list = [searched_title] + recommendations
 
                 else:
                     # -------------------------
-                    # 4. MOVIE TITLE SEARCH
+                    # 5. ACTOR / CHARACTER FALLBACK
                     # -------------------------
-                    titles      = movies["title"].str.lower().tolist()
-                    title_match = get_close_matches(query_lower, titles, n=1, cutoff=0.6)
+                    logger.info(f"Trying actor/character fallback: '{query_lower}'")
+                    final_list = search_by_actor_or_character(query_lower)
 
-                    if title_match:
-                        matched_title = title_match[0]
-                        logger.info(f"Title match: '{query_lower}' → '{matched_title}'")
-                        mlflow.log_param("search_type",   "movie_title")
-                        mlflow.log_param("matched_title", matched_title)
+    if not final_list:
+        logger.warning(f"No results for: '{query}'")
+        return []
 
-                        searched_title = movies[movies["title"].str.lower() == matched_title].iloc[0]["title"]
-                        index = movies[movies["title"].str.lower() == matched_title].index[0]
+    elapsed   = round(time.time() - start_time, 4)
+    avg_score = round(sum(similarity_scores) / len(similarity_scores), 4) if similarity_scores else 0
+    logger.info(f"Returning {len(final_list)} results in {elapsed}s")
 
-                        distances = sorted(enumerate(similarity[index]), key=lambda x: x[1], reverse=True)
-                        recommendations   = []
-                        similarity_scores = []
-                        for i in distances[1:10]:
-                            recommendations.append(movies.iloc[i[0]].title)
-                            similarity_scores.append(round(i[1], 4))
-
-                        final_list = [searched_title] + recommendations
-
-                    else:
-                        # -------------------------
-                        # 5. ACTOR / CHARACTER FALLBACK
-                        # -------------------------
-                        logger.info(f"Trying actor/character search: '{query_lower}'")
-                        mlflow.log_param("search_type", "actor_character")
-                        final_list = search_by_actor_or_character(query_lower)
-
-                        if not final_list:
-                            mlflow.log_param("match_found", False)
-                            mlflow.log_metric("recommendations_count", 0)
-                            logger.warning(f"No results for: '{query}'")
-                            return []
-
-        if not final_list:
-            mlflow.log_param("match_found", False)
-            mlflow.log_metric("recommendations_count", 0)
-            return []
-
-        elapsed   = round(time.time() - start_time, 4)
-        avg_score = round(sum(similarity_scores) / len(similarity_scores), 4) if similarity_scores else 0
-
-        mlflow.log_param("match_found",            True)
-        mlflow.log_metric("recommendations_count", len(final_list))
-        mlflow.log_metric("top_similarity_score",  similarity_scores[0] if similarity_scores else 0)
-        mlflow.log_metric("avg_similarity_score",  avg_score)
-        mlflow.log_metric("response_time_sec",     elapsed)
-
-        logger.info(f"Returning {len(final_list)} results in {elapsed}s")
+    # -------------------------
+    # MLflow logging — non-critical, never crashes recommendations
+    # -------------------------
+    try:
+        with mlflow.start_run(run_name=f"predict-{query_lower[:30]}"):
+            mlflow.log_param("query",                  query_lower)
+            mlflow.log_param("match_found",            True)
+            mlflow.log_metric("recommendations_count", len(final_list))
+            mlflow.log_metric("top_similarity_score",  similarity_scores[0] if similarity_scores else 0)
+            mlflow.log_metric("avg_similarity_score",  avg_score)
+            mlflow.log_metric("response_time_sec",     elapsed)
+    except Exception as mlflow_err:
+        logger.warning(f"MLflow logging skipped (non-critical): {mlflow_err}")
 
     return final_list

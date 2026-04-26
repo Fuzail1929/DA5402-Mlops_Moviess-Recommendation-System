@@ -1,0 +1,11 @@
+mlruns/
+venv/
+__pycache__/
+*.pyc
+data/
+airflow_db/
+logs/
+frontend_logs/
+backend_logs/
+feedback_logs/
+*.db

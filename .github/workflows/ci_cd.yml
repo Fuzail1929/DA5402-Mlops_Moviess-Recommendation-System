@@ -8,12 +8,11 @@ on:
 
 jobs:
   # =============================
-  # JOB 1: TEST
+  # JOB 1: RUN TESTS
   # =============================
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,33 +25,35 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install pandas numpy scikit-learn fastapi httpx python-dotenv requests scipy pyyaml
+          pip install pandas numpy scikit-learn fastapi httpx python-dotenv \
+                      requests scipy pyyaml pytest pytest-asyncio \
+                      mlflow difflib2 uvicorn
 
-      - name: Test imports
+      - name: Set environment variables
         run: |
-          python -c "
-          import sys
-          sys.path.insert(0, 'ml_pipeline')
-          from preprocess import preprocess
-          print('preprocess import OK')
-          from data_loader import load_data
-          print('data_loader import OK')
-          "
+          echo "TMDB_API_KEY=test_api_key_12345" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_URI=file:///tmp/mlflow_test" >> $GITHUB_ENV
+          echo "LOG_DIR=/tmp/logs" >> $GITHUB_ENV
 
-      - name: Validate DVC pipeline
+      - name: Create required directories
         run: |
-          python -c "
-          import yaml
-          with open('dvc.yaml') as f:
-              d = yaml.safe_load(f)
-          print('dvc.yaml valid - stages:', list(d['stages'].keys()))
-          "
+          mkdir -p /tmp/logs
+          mkdir -p logs
 
-      - name: Check DVC tracked files exist
+      - name: Run ML pipeline tests
         run: |
-          echo "DVC tracked files:"
-          find . -name "*.dvc" | grep -v ".dvc/"
-          echo "All DVC files present"
+          pytest tests/test_ml.py -v --tb=short
+
+      - name: Run API tests
+        run: |
+          pytest tests/test_api.py -v --tb=short
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: .pytest_cache/
 
   # =============================
   # JOB 2: VALIDATE CONFIGS
@@ -60,7 +61,6 @@ jobs:
   validate:
     name: Validate Config Files
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -95,6 +95,28 @@ jobs:
           print('cinematch_dashboard.json valid')
           "
 
+      - name: Validate DVC pipeline
+        run: |
+          pip install pyyaml
+          python -c "
+          import yaml
+          with open('dvc.yaml') as f:
+              d = yaml.safe_load(f)
+          print('dvc.yaml valid - stages:', list(d['stages'].keys()))
+          "
+
+      - name: Test imports
+        run: |
+          pip install pandas numpy scikit-learn
+          python -c "
+          import sys
+          sys.path.insert(0, 'ml_pipeline')
+          from preprocess import preprocess
+          print('preprocess import OK')
+          from data_loader import load_data
+          print('data_loader import OK')
+          "
+
   # =============================
   # JOB 3: BUILD DOCKER IMAGES
   # Only on push to main
@@ -104,7 +126,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ test, validate ]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
