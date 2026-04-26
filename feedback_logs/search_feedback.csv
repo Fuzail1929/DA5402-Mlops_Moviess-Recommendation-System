@@ -155,3 +155,6 @@ timestamp,query,matched_title,recommendations_count,latency_ms,status
 2026-04-26T20:10:35.174200,inception,Inception,10,10661.29,success
 2026-04-26T20:10:37.531207,inception,Inception,10,2343.65,success
 2026-04-26T20:10:50.850928,Tom Hanks,The Da Vinci Code,10,3448.89,success
+2026-04-26T20:32:27.306352,johnny Depp,Alice Through the Looking Glass,10,17572.38,success
+2026-04-26T20:32:29.620411,johnny Depp,Alice Through the Looking Glass,10,2302.54,success
+2026-04-26T20:32:31.718579,johnny Depp,Alice Through the Looking Glass,10,2086.63,success
