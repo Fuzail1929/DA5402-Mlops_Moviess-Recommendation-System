@@ -19,13 +19,7 @@ __pycache__/
 /data/tmdb_5000_credits.csv
 
 # DVC managed model outputs — tracked via dvc.yaml
-ml_pipeline/model/movies.pkl
-ml_pipeline/model/similarity.pkl
-ml_pipeline/model/similarity_sparse.pkl
-ml_pipeline/model/vectorizer.pkl
-ml_pipeline/model/feature_impact.json
-ml_pipeline/model/model_version.json
-ml_pipeline/model/baseline_statistics.json
+ml_pipeline/model/
 
 # Feature store — DVC tracked
 ml_pipeline/feature_store/
