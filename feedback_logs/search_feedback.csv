@@ -158,3 +158,24 @@ timestamp,query,matched_title,recommendations_count,latency_ms,status
 2026-04-26T20:32:27.306352,johnny Depp,Alice Through the Looking Glass,10,17572.38,success
 2026-04-26T20:32:29.620411,johnny Depp,Alice Through the Looking Glass,10,2302.54,success
 2026-04-26T20:32:31.718579,johnny Depp,Alice Through the Looking Glass,10,2086.63,success
+2026-04-27T09:21:54.875349,The Godfather: Part II,The Godfather: Part II,10,4459.11,success
+2026-04-27T09:21:56.493788,Avengers: Endgame,Highlander: Endgame,10,3808.67,success
+2026-04-27T09:21:58.761496,Avengers: Endgame,Highlander: Endgame,10,2239.63,success
+2026-04-27T09:21:58.866178,Forrest Gump,The Da Vinci Code,10,3486.47,success
+2026-04-27T09:22:01.425270,Forrest Gump,The Da Vinci Code,10,2554.31,success
+2026-04-27T09:22:03.849033,Forrest Gump,The Da Vinci Code,10,2395.06,success
+2026-04-27T09:25:05.406808,Tom Hanks,The Da Vinci Code,10,2714.97,success
+2026-04-27T09:25:34.000692,Larry Crowne,Larry Crowne,10,3427.04,success
+2026-04-27T12:00:49.904931,Pulp Fiction,Pulp Fiction,10,3924.52,success
+2026-04-27T12:01:07.474995,Stuart little,Stuart Little,10,3094.16,success
+2026-04-27T12:32:26.448350,Tom Hanks,The Da Vinci Code,10,3529.54,success
+2026-04-27T12:32:36.551531,Tom Hanks,The Da Vinci Code,10,2272.01,success
+2026-04-28T04:13:14.637587,The Dark Knight,The Dark Knight,10,4224.1,success
+2026-04-28T04:13:28.581350,Avengers,Avengers: Age of Ultron,10,3105.6,success
+2026-04-28T04:14:52.837010,Iron man,The Soloist,10,2919.27,success
+2026-04-28T04:15:40.694468,Captain America,Scott Pilgrim vs. the World,10,2822.1,success
+2026-04-28T04:16:04.499697,Interstellar,Interstellar,10,2584.33,success
+2026-04-28T04:16:06.612540,Interstellar,Interstellar,10,2099.01,success
+2026-04-28T04:16:15.443435,The Shawshank Redemption,The Shawshank Redemption,10,3080.15,success
+2026-04-28T04:16:33.828345,Avenger,Extremely Loud & Incredibly Close,10,2527.72,success
+2026-04-28T04:16:35.973382,Avenger,Extremely Loud & Incredibly Close,10,2132.95,success

@@ -1,11 +1,69 @@
-mlruns/
+
+
+# Git internals
+.git/
+.gitignore
+.gitattributes
+
+# DVC internals — not needed inside container
+.dvc/
+*.dvc
+dvc.lock
+dvc.yaml
+
+# Python virtual environment — deps installed via requirements.txt
 venv/
 __pycache__/
 *.pyc
-data/
-airflow_db/
+*.pyo
+
+# Environment file — injected via docker-compose env_file
+.env
+
+# Logs — mounted as Docker volumes
 logs/
-frontend_logs/
+backend/logs/
 backend_logs/
+frontend_logs/
+*.log
+
+# Feedback logs — mounted as Docker volume
 feedback_logs/
-*.db
+
+# Airflow database — mounted as Docker volume
+airflow_db/
+
+# MLflow runs — mounted as Docker volume
+mlruns/
+ml_pipeline/mlruns/
+mlflow.db
+
+# Feature store — mounted as Docker volume
+ml_pipeline/feature_store/
+
+# Tests — only needed for CI/CD, not runtime
+tests/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Documentation — not needed in container
+Documentation/
+*.md
+*.docx
+*.svg
+*.pdf 
+
+# CI/CD config — not needed in container
+.github/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# DVC cache — large, not needed in container
+.dvc/cache/

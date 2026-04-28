@@ -1,51 +1,65 @@
+# =============================
+# CineMatch - .gitignore
+# =============================
+
 # Python
+venv/
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
-*.pyc
 .Python
 *.egg-info/
-dist/
-build/
-*.egg
 
-# Virtual environment
-venv/
+# Environment — never commit secrets
 .env
-env/
-ENV/
 
-# Model artifacts (tracked by DVC)
+# DVC managed files — tracked via .dvc files
+/data/tmdb_5000_movies.csv
+/data/tmdb_5000_credits.csv
+
+# DVC managed model outputs — tracked via dvc.yaml
 ml_pipeline/model/movies.pkl
 ml_pipeline/model/similarity.pkl
 ml_pipeline/model/similarity_sparse.pkl
 ml_pipeline/model/vectorizer.pkl
+ml_pipeline/model/feature_impact.json
+ml_pipeline/model/model_version.json
+ml_pipeline/model/baseline_statistics.json
 
-# MLflow runs (large)
+# Feature store — DVC tracked
+ml_pipeline/feature_store/
+
+# MLflow runs
 mlruns/
+ml_pipeline/mlruns/
 mlflow.db
 
-# Data files (tracked by DVC)
-data/tmdb_5000_movies.csv
-data/tmdb_5000_credits.csv
-
-# Airflow
-airflow_db/
+# Logs — runtime generated, not needed in Git
 logs/
+backend/logs/
+backend_logs/
+frontend_logs/
 *.log
+
+# Feedback logs — runtime generated
+feedback_logs/
+
+# Airflow database — runtime generated
+airflow_db/
+
+# Test cache
+.pytest_cache/
+.coverage
+htmlcov/
 
 # OS
 .DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
 .idea/
-.vscode/
 
-# DVC cache
-.dvc/cache/
-.dvc/tmp/
-
-# Feature store versions (large)
-ml_pipeline/feature_store/v_*/
-
-# Backup models
-ml_pipeline/model/backup_*/
+# __pycache__/
+**/__pycache__/

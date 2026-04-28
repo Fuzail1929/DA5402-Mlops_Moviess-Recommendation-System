@@ -2,7 +2,7 @@
 // TMDB CONFIG - paste your API key here
 // =============================================
 
-const TMDB_API_KEY = '8265bd1679663a7ea12ac168da84d2e8'; // 🔑 Replace with your key
+const TMDB_API_KEY = 'your_real_key_here'; // 🔑 Replace with your key
 const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w300";
 
 // =============================================

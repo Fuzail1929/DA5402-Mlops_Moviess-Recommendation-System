@@ -9,23 +9,28 @@
 
 > An AI-powered movie recommendation system with a full MLOps pipeline — automated training, drift detection, real-time monitoring, and CI/CD.
 
----
+## Screenshots
 
-##  Table of Contents
+<p align="center">
+  <img src="Screenshots/Home_page.png" width="80%" alt="Home Page"/>
+  <br/><em>Home Page</em>
+</p>
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Quick Start](#quick-start)
-- [Services & URLs](#services--urls)
-- [API Endpoints](#api-endpoints)
-- [ML Pipeline](#ml-pipeline)
-- [Monitoring](#monitoring)
-- [Data Versioning](#data-versioning)
-- [CI/CD](#cicd)
-- [Documentation](#documentation)
+<p align="center">
+  <img src="Screenshots/Search_bar.png" width="80%" alt="Search Bar"/>
+  <br/><em>Search Bar</em>
+</p>
+
+<p align="center">
+  <img src="Screenshots/Result.png" width="80%" alt="Search Results"/>
+  <br/><em>Movie Recommendations</em>
+</p>
+
+<p align="center">
+  <img src="Screenshots/Airflow_dag_run.png" width="80%" alt="Airflow dag"/>
+  <br/><em>Movie Recommendations</em>
+</p>
+
 
 ---
 
@@ -36,7 +41,7 @@ CineMatch takes a movie title as input and returns 10 similar movie recommendati
 - **Online (real-time) serving** via FastAPI REST API
 - **Automated retraining** via Apache Airflow when data drift is detected
 - **Full experiment tracking** via MLflow with model registry
-- **Real-time monitoring** via Prometheus + Grafana (18-panel dashboard)
+- **Real-time monitoring** via Prometheus + Grafana (24-panel dashboard)
 - **Data versioning** via DVC + Git
 - **CI/CD** via GitHub Actions
 
@@ -62,15 +67,15 @@ All services run in Docker containers on a shared `cinematch-network` bridge net
 
 ### Frontend
 - 🎨 Dark-themed responsive UI built with HTML/CSS/JavaScript
-- 🔍 Movie search with fuzzy matching
+- 🔍 Smart search — movie title, genre, actor name, or character name (e.g. 'Loki', 'Tom Hanks')
 - 🎠 Auto-scrolling movie carousel
-- 🎭 Genre browsing (Action, Sci-Fi, Drama, Horror, Comedy, etc.)
+- 🎭 Genre browsing — direct genre search (Action, Sci-Fi, Drama, Horror, Comedy, etc.)
 - ❤️ Favorites system with navbar counter
 - 🖼️ Movie cards with TMDB posters, ratings, and overviews
 
 ### Backend
 - ⚡ FastAPI REST API with 8 endpoints
-- 📊 15+ Prometheus metrics instrumented
+- 📊 20+ Prometheus metrics instrumented
 - 🔄 Feedback loop — every search logged as ground truth
 - 📈 Data drift detection — auto-triggers retraining
 - 🔁 Automatic rollback if new model underperforms
@@ -155,12 +160,18 @@ AI-Project/
 │   └── drift_report.json         # Latest drift report
 ├── .github/workflows/ci_cd.yml   # GitHub Actions CI/CD
 ├── dvc.yaml                       # DVC pipeline definition
-├── MLproject                      # MLflow project file
-├── conda.yaml                     # MLflow environment spec
+├── MLproject                      # MLflow project file               
 ├── docker-compose.yaml            # All 10 services
 ├── Dockerfile.backend
+├──Documentation/                
+│   ├── architecture_diagram.svg
+│   ├── Cinematch_HLD.pdf
+│   ├── test_plan.pdf
+│   ├── Usermanual_CInematch
+│   └── Cinematch_LLD.pdf
 ├── Readme.md
-└── Dockerfile.frontend
+├── Dockerfile.frontend
+└── requirements.txt    
 ```
 
 ---
@@ -209,9 +220,9 @@ http://localhost:5050
 | FastAPI Backend | http://localhost:8001 | — |
 | FastAPI Docs | http://localhost:8001/docs | — |
 | MLflow UI | http://localhost:5001 | — |
-| Airflow UI | http://localhost:8080 | admin / admin |
+| Airflow UI | http://localhost:8080 | admin / cinematch123 |
 | Prometheus | http://localhost:9090 | — |
-| Grafana | http://localhost:3001 | admin / admin |
+| Grafana | http://localhost:3001 | admin / cinematch123 |
 | Node Exporter | http://localhost:9100 | — |
 | cAdvisor | http://localhost:8081 | — |
 
@@ -251,7 +262,7 @@ curl -X POST "http://localhost:8001/retrain?reason=demo"
 - **Features**: Overview(1x) + Genres(2x) + Keywords(1x) + Cast(2x) + Director(3x)
 - **Vocabulary**: 7000 features, bigrams, sublinear TF
 - **Optimization**: Sparse similarity matrix (top-20 per movie, 60-80% memory reduction)
-- **Evaluation**: Genre match rate (target ≥ 60%)
+- **Evaluation**: Genre match rate (target ≥ 50%, achieved ~78%)
 
 ### Training DAG (Weekly)
 ```
@@ -269,7 +280,7 @@ load_data → eda → preprocess
 
 ### Trigger Training Manually
 ```bash
-# Via Airflow UI at http://localhost:8080
+# Via Airflow UI at http://localhost:8085
 # Or via API:
 curl -X POST "http://localhost:8001/retrain?reason=manual"
 ```
@@ -278,7 +289,7 @@ curl -X POST "http://localhost:8001/retrain?reason=manual"
 
 ##  Monitoring
 
-### Prometheus Metrics (15+)
+### Prometheus Metrics (20+)
 | Metric | Type | Description |
 |--------|------|-------------|
 | `cinematch_requests_total` | Counter | Total API requests |
@@ -287,9 +298,13 @@ curl -X POST "http://localhost:8001/retrain?reason=manual"
 | `cinematch_recommendations_total` | Counter | Recommendations by status |
 | `cinematch_drift_detected` | Gauge | 1 if drift detected |
 | `cinematch_retraining_triggered_total` | Counter | Auto-retraining count |
+| `cinematch_feedback_total` | Counter | User feedback logged |
+| `cinematch_positive_feedback_total` | Counter | Favorites added |
+| `cinematch_drift_score` | Gauge | Per-feature drift score |
+| `cinematch_latency_violations_total` | Counter | >200ms SLO violations |
 
 ### Grafana Dashboard
-18 panels including request rate, latency percentiles, recommendation status, TMDB calls, CPU, memory, network, and drift metrics.
+24 panels including request rate, latency percentiles, recommendation status, TMDB calls, CPU, memory, network, and drift metrics.
 
 ### Drift Detection
 - Runs every 10 recommendation requests automatically
@@ -336,13 +351,12 @@ View pipeline: https://github.com/Fuzail1929/DA5402-Mlops_Moviess-Recommendation
 
 | Document | Description |
 |----------|-------------|
-| `HLD_CineMatch.docx` | High-Level Design — architecture, components, data flow |
-| `LLD_CineMatch.docx` | Low-Level Design — API specs, module design, data models |
-| `UserManual_CineMatch.docx` | Non-technical user guide |
-| `TestPlan_CineMatch.docx` | Test plan, 35 test cases, test report |
+| `HLD_Document.docx` | High-Level Design — architecture, components, data flow |
+| `LLD_Document.docx` | Low-Level Design — API specs, module design, data models |
+| `User_Manual.docx` | Non-technical user guide |
+| `Test_Plan_Report.docx` | Test plan, 25 test cases, test report |
 | `architecture_diagram.svg` | System architecture diagram |
 | `MLproject` | MLflow project definition |
-| `conda.yaml` | Reproducible conda environment |
 
 ---
 

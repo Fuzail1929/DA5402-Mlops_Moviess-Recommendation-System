@@ -1,9 +1,0 @@
-venv/
-__pycache__/
-*.pyc
-*.pyo
-mlruns/
-.git/
-.env
-frontend_logs/
-feedback_logs/
