@@ -28,7 +28,7 @@
 
 <p align="center">
   <img src="Screenshots/Airflow_dag_run.png" width="80%" alt="Airflow dag"/>
-  <br/><em>Movie Recommendations</em>
+  <br/><em>Airflow dag Successful run</em>
 </p>
 
 
