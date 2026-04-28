@@ -163,7 +163,8 @@ AI-Project/
 ├── MLproject                      # MLflow project file               
 ├── docker-compose.yaml            # All 10 services
 ├── Dockerfile.backend
-├──Documentation/                
+├──Documentation/ 
+│   ├── Cinematch_Final_Report.pdf               
 │   ├── architecture_diagram.svg
 │   ├── Cinematch_HLD.pdf
 │   ├── test_plan.pdf

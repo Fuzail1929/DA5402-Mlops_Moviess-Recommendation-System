@@ -180,3 +180,5 @@ timestamp,query,matched_title,recommendations_count,latency_ms,status
 2026-04-28T04:16:33.828345,Avenger,Extremely Loud & Incredibly Close,10,2527.72,success
 2026-04-28T04:16:35.973382,Avenger,Extremely Loud & Incredibly Close,10,2132.95,success
 2026-04-28T04:52:34.081191,bolt,Bolt,10,4003.06,success
+2026-04-28T05:12:30.410123,smurfs,The Smurfs,10,3126.47,success
+2026-04-28T05:12:44.159936,the smurfs,The Smurfs,10,2032.97,success
